@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/devices")
@@ -21,7 +23,7 @@ public class CreateDevice {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void execute(
-            @RequestBody CreateRequestDevice device) {
+            @Valid @RequestBody final CreateRequestDevice device) {
         deviceCreator.execute(device);
     }
 }
