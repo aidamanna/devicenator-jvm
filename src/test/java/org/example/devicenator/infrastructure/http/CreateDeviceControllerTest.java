@@ -1,7 +1,7 @@
 package org.example.devicenator.infrastructure.http;
 
-import org.example.devicenator.infrastructure.dtos.CreateRequestDevice;
-import org.example.devicenator.infrastructure.persistence.DeviceCreator;
+import org.example.devicenator.application.createdevice.CreateRequestDevice;
+import org.example.devicenator.application.createdevice.CreateDevice;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -15,9 +15,10 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CreateDeviceTest {
+public class CreateDeviceControllerTest {
 
-    private static final String REQUEST_BODY = "{\"vendor\": \"iPhone\", " +
+    private static final String REQUEST_BODY = "{\"imei\": \"990000862471854\", " +
+            "\"vendor\": \"iPhone\", " +
             "\"model\": \"iPhone X\", " +
             "\"operatingSystem\": \"iOS\", " +
             "\"operatingSystemVersion\": \"10\"}";
@@ -25,13 +26,13 @@ public class CreateDeviceTest {
     private static final String EMPTY_REQUEST_BODY = "{}";
 
     private MockMvc mockMvc;
-    private DeviceCreator deviceCreator;
+    private CreateDevice createDevice;
 
     @Before
     public void setUp() {
-        deviceCreator = Mockito.mock(DeviceCreator.class);
-        CreateDevice createDevice = new CreateDevice(deviceCreator);
-        mockMvc = MockMvcBuilders.standaloneSetup(createDevice).build();
+        createDevice = Mockito.mock(CreateDevice.class);
+        CreateDeviceController createDeviceController = new CreateDeviceController(createDevice);
+        mockMvc = MockMvcBuilders.standaloneSetup(createDeviceController).build();
     }
 
     @Test
@@ -42,12 +43,13 @@ public class CreateDeviceTest {
                 .andExpect(status().isCreated());
 
         CreateRequestDevice device = new CreateRequestDevice(
+                "990000862471854",
                 "iPhone",
                 "iPhone X",
                 "iOS",
                 10);
 
-        verify(deviceCreator).execute(device);
+        verify(createDevice).execute(device);
     }
 
     @Test
@@ -57,6 +59,6 @@ public class CreateDeviceTest {
                 .content(EMPTY_REQUEST_BODY))
                 .andExpect(status().isBadRequest());
 
-        verify(deviceCreator, never()).execute(any());
+        verify(createDevice, never()).execute(any());
     }
 }

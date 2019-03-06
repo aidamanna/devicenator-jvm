@@ -1,7 +1,7 @@
 package org.example.devicenator.infrastructure.http;
 
-import org.example.devicenator.infrastructure.dtos.CreateRequestDevice;
-import org.example.devicenator.infrastructure.persistence.DeviceCreator;
+import org.example.devicenator.application.createdevice.CreateDevice;
+import org.example.devicenator.application.createdevice.CreateRequestDevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,20 +11,20 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/devices")
-public class CreateDevice {
+public class CreateDeviceController {
 
-    private DeviceCreator deviceCreator;
+    private CreateDevice createDevice;
 
     @Autowired
-    public CreateDevice(DeviceCreator deviceCreator) {
-        this.deviceCreator = deviceCreator;
+    public CreateDeviceController(CreateDevice createDevice) {
+        this.createDevice = createDevice;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void execute(
             @Valid @RequestBody final CreateRequestDevice device) {
-        deviceCreator.execute(device);
+        createDevice.execute(device);
     }
 }
 

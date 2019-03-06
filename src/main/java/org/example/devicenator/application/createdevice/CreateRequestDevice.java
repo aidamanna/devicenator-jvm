@@ -1,19 +1,19 @@
-package org.example.devicenator.infrastructure.dtos;
+package org.example.devicenator.application.createdevice;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 public class CreateRequestDevice {
+
+    @NotBlank
+    private String imei;
 
     @NotBlank
     private String vendor;
