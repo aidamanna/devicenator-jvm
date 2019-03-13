@@ -10,19 +10,19 @@ import org.example.devicenator.application.createdevice.CreateRequestDevice;
 @ToString
 public class Device {
 
-    private String imei;
-    private String vendor;
-    private String model;
-    private String operatingSystem;
-    private int operatingSystemVersion;
+    private final String imei;
+    private final String vendor;
+    private final String model;
+    private final String operatingSystem;
+    private final int operatingSystemVersion;
 
     public static Device create(CreateRequestDevice createRequestDevice) {
         return new Device(
-                createRequestDevice.getImei(),
-                createRequestDevice.getVendor(),
-                createRequestDevice.getModel(),
-                createRequestDevice.getOperatingSystem(),
-                createRequestDevice.getOperatingSystemVersion()
+                createRequestDevice.imei,
+                createRequestDevice.vendor,
+                createRequestDevice.model,
+                createRequestDevice.operatingSystem,
+                createRequestDevice.operatingSystemVersion
         );
     }
 }
