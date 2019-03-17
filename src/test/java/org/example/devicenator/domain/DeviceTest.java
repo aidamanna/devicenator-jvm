@@ -1,8 +1,9 @@
 package org.example.devicenator.domain;
 
-import org.example.devicenator.application.createdevice.CreateRequestDevice;
 import org.junit.Test;
 
+import static org.example.devicenator.DeviceFixtures.aCreatedRequestDevice;
+import static org.example.devicenator.DeviceFixtures.aDevice;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -10,20 +11,8 @@ public class DeviceTest {
 
     @Test
     public void createsADeviceFromACreateRequestDevice() {
-        CreateRequestDevice createRequestDevice = new CreateRequestDevice(
-                "990000862471854",
-                "iPhone",
-                "iPhone X",
-                "iOS",
-                10);
+        Device device = Device.create(aCreatedRequestDevice());
 
-        Device expectedDevice = new Device("990000862471854",
-                "iPhone",
-                "iPhone X",
-                "iOS",
-                10);
-
-        Device device = Device.create(createRequestDevice);
-        assertThat(device, is(expectedDevice));
+        assertThat(device, is(aDevice()));
     }
 }

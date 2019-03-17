@@ -1,5 +1,8 @@
 package org.example.devicenator.domain;
 
 public interface DeviceRepository {
-    Device save(Device device);
+
+    void save(Device device);
+
+    Device getBy(String imei);
 }

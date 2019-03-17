@@ -1,6 +1,5 @@
 package org.example.devicenator.infrastructure.http;
 
-import org.example.devicenator.application.createdevice.CreateRequestDevice;
 import org.example.devicenator.application.createdevice.CreateDevice;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.example.devicenator.DeviceFixtures.aCreatedRequestDevice;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -42,14 +42,7 @@ public class CreateDeviceControllerTest {
                 .content(REQUEST_BODY))
                 .andExpect(status().isCreated());
 
-        CreateRequestDevice device = new CreateRequestDevice(
-                "990000862471854",
-                "iPhone",
-                "iPhone X",
-                "iOS",
-                10);
-
-        verify(createDevice).execute(device);
+        verify(createDevice).execute(aCreatedRequestDevice());
     }
 
     @Test

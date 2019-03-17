@@ -3,25 +3,25 @@ package org.example.devicenator.application.createdevice;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
+@Getter
 @EqualsAndHashCode
 @ToString
 public class CreateRequestDevice {
 
     @NotBlank
-    public final String imei;
+    private final String imei;
 
     @NotBlank
-    public final String vendor;
+    private final String vendor;
 
     @NotBlank
-    public final String model;
+    private final String model;
 
     @NotBlank
     public final String operatingSystem;
 
-    @NotNull
-    public final Integer operatingSystemVersion;
+    @NotBlank
+    private final String operatingSystemVersion;
 }

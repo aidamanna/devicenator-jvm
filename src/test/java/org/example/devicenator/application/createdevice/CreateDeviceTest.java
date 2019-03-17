@@ -5,6 +5,7 @@ import org.example.devicenator.domain.DeviceRepository;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.example.devicenator.DeviceFixtures.aCreatedRequestDevice;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -22,14 +23,7 @@ public class CreateDeviceTest {
 
     @Test
     public void createsADevice() {
-        CreateRequestDevice device = new CreateRequestDevice(
-                "990000862471854",
-                "iPhone",
-                "iPhone X",
-                "iOS",
-                10);
-
-        createDevice.execute(device);
+        createDevice.execute(aCreatedRequestDevice());
 
         verify(deviceRepository).save(any(Device.class));
     }
