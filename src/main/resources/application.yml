@@ -1,0 +1,19 @@
+spring:
+  http.converters:
+    preferred-json-mapper: gson
+
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+
+  flyway:
+    user: sa
+    password:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    baseline-on-migrate: true
