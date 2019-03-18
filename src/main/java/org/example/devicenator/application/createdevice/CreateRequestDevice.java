@@ -20,7 +20,7 @@ public class CreateRequestDevice {
     private final String model;
 
     @NotBlank
-    public final String operatingSystem;
+    private final String operatingSystem;
 
     @NotBlank
     private final String operatingSystemVersion;

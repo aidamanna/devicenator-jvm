@@ -23,7 +23,7 @@ public class CreateDeviceController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void execute(
-            @Valid @RequestBody final CreateRequestDevice device) {
+            @Valid @RequestBody CreateRequestDevice device) {
         createDevice.execute(device);
     }
 }
