@@ -3,33 +3,36 @@ package org.example.devicenator.infrastructure.persistence;
 import org.example.devicenator.domain.Device;
 import org.example.devicenator.domain.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
-import org.example.devicenator.infrastructure.configuration.ApplicationConfiguration;
+import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.sql.DataSource;
 
 import static org.example.devicenator.DeviceFixtures.aDevice;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = NONE, classes = ApplicationConfiguration.class)
-@EnableAutoConfiguration
 public class DeviceJDBCRepositoryTest {
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     private DeviceRepository deviceRepository;
 
     @Before
     public void setUp() {
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName("org.h2.Driver");
+        dataSourceBuilder.url("jdbc:h2:mem:test");
+        dataSourceBuilder.username("sa");
+        dataSourceBuilder.password("");
+        DataSource dataSource = dataSourceBuilder.build();
+
+        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
+        flyway.migrate();
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
         deviceRepository = new DeviceJDBCRepository(jdbcTemplate);
     }
 
