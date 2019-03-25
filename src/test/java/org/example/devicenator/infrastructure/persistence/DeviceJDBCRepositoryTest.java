@@ -2,7 +2,9 @@ package org.example.devicenator.infrastructure.persistence;
 
 import org.example.devicenator.domain.Device;
 import org.example.devicenator.domain.DeviceRepository;
+import org.example.devicenator.domain.device.DeviceNotFound;
 import org.example.devicenator.infrastructure.configuration.ApplicationConfiguration;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,16 @@ public class DeviceJDBCRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    private DeviceRepository deviceRepository;
+
+    @Before
+    public void setUp() {
+        deviceRepository = new DeviceJDBCRepository(jdbcTemplate);
+    }
+
+
     @Test
-    public void savesADevice() {
-        DeviceRepository deviceRepository = new DeviceJDBCRepository(jdbcTemplate);
+    public void savesADevice() throws DeviceNotFound {
         Device device = aDevice();
 
         deviceRepository.save(device);
@@ -34,4 +43,11 @@ public class DeviceJDBCRepositoryTest {
         Device savedDevice = deviceRepository.getBy(device.getImei());
         assertThat(savedDevice, is(device));
     }
+
+
+    @Test(expected = DeviceNotFound.class)
+    public void throwsExceptionWhenRetrievingANonExistingDevice() throws DeviceNotFound {
+        deviceRepository.getBy("99000086247185");
+    }
+
 }

@@ -2,6 +2,8 @@ package org.example.devicenator.infrastructure.persistence;
 
 import org.example.devicenator.domain.Device;
 import org.example.devicenator.domain.DeviceRepository;
+import org.example.devicenator.domain.device.DeviceNotFound;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -31,13 +33,17 @@ public class DeviceJDBCRepository implements DeviceRepository {
     }
 
     @Override
-    public Device getBy(String imei) {
+    public Device getBy(String imei) throws DeviceNotFound {
         getDeviceByIdQuery = "SELECT * FROM devices WHERE imei=?";
 
-        return jdbcTemplate.queryForObject(
-                getDeviceByIdQuery,
-                new Object[] { imei },
-                new DeviceRowMapper());
+        try {
+            return jdbcTemplate.queryForObject(
+                    getDeviceByIdQuery,
+                    new Object[]{imei},
+                    new DeviceRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            throw new DeviceNotFound();
+        }
     }
 
     public class DeviceRowMapper implements RowMapper<Device> {
