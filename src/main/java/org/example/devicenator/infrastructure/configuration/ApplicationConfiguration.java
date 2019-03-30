@@ -1,7 +1,8 @@
 package org.example.devicenator.infrastructure.configuration;
 
 import org.example.devicenator.application.createdevice.CreateDevice;
-import org.example.devicenator.domain.DeviceRepository;
+import org.example.devicenator.application.getdevice.GetDevice;
+import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,11 @@ public class ApplicationConfiguration {
     @Bean
     public CreateDevice createDevice(DeviceRepository deviceRepository) {
         return new CreateDevice(deviceRepository);
+    }
+
+    @Bean
+    public GetDevice getDevice(DeviceRepository deviceRepository) {
+        return new GetDevice(deviceRepository);
     }
 
     @Bean

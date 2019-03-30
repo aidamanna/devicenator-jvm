@@ -10,7 +10,6 @@ import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping("/devices")
 public class CreateDeviceController {
 
     private CreateDevice createDevice;
@@ -20,10 +19,9 @@ public class CreateDeviceController {
         this.createDevice = createDevice;
     }
 
-    @PostMapping
+    @PostMapping("/devices")
     @ResponseStatus(HttpStatus.CREATED)
-    public void execute(
-            @Valid @RequestBody CreateRequestDevice device) {
+    public void execute(@Valid @RequestBody CreateRequestDevice device) {
         createDevice.execute(device);
     }
 }

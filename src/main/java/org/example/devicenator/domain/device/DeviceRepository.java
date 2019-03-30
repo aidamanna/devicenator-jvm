@@ -1,6 +1,4 @@
-package org.example.devicenator.domain;
-
-import org.example.devicenator.domain.device.DeviceNotFound;
+package org.example.devicenator.domain.device;
 
 public interface DeviceRepository {
 

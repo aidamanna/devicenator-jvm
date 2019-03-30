@@ -1,7 +1,7 @@
 package org.example.devicenator.infrastructure.persistence;
 
-import org.example.devicenator.domain.Device;
-import org.example.devicenator.domain.DeviceRepository;
+import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,7 +1,7 @@
 package org.example.devicenator.application.createdevice;
 
-import org.example.devicenator.domain.Device;
-import org.example.devicenator.domain.DeviceRepository;
+import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.DeviceRepository;
 
 public class CreateDevice {
     private DeviceRepository deviceRepository;

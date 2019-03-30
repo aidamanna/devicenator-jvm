@@ -1,7 +1,7 @@
 package org.example.devicenator.infrastructure.persistence;
 
-import org.example.devicenator.domain.Device;
-import org.example.devicenator.domain.DeviceRepository;
+import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.flywaydb.core.Flyway;
 import org.junit.Before;
@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
+import static org.example.devicenator.DeviceFixtures.UNKNOWN_IMEI;
 import static org.example.devicenator.DeviceFixtures.aDevice;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -50,7 +51,7 @@ public class DeviceJDBCRepositoryTest {
 
     @Test(expected = DeviceNotFound.class)
     public void throwsExceptionWhenRetrievingANonExistingDevice() throws DeviceNotFound {
-        deviceRepository.getBy("99000086247185");
+        deviceRepository.getBy(UNKNOWN_IMEI);
     }
 
 }

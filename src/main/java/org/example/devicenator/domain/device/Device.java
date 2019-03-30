@@ -1,4 +1,4 @@
-package org.example.devicenator.domain;
+package org.example.devicenator.domain.device;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
