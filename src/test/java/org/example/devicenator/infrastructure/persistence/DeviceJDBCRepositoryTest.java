@@ -4,6 +4,7 @@ import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.flywaydb.core.Flyway;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -13,12 +14,14 @@ import javax.sql.DataSource;
 
 import static org.example.devicenator.DeviceFixtures.UNKNOWN_IMEI;
 import static org.example.devicenator.DeviceFixtures.aDevice;
+import static org.example.devicenator.DeviceFixtures.anUpdatedDevice;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class DeviceJDBCRepositoryTest {
 
     private DeviceRepository deviceRepository;
+    private Flyway flyway;
 
     @Before
     public void setUp() {
@@ -29,7 +32,7 @@ public class DeviceJDBCRepositoryTest {
         dataSourceBuilder.password("");
         DataSource dataSource = dataSourceBuilder.build();
 
-        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
+        flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -37,6 +40,10 @@ public class DeviceJDBCRepositoryTest {
         deviceRepository = new DeviceJDBCRepository(jdbcTemplate);
     }
 
+    @After
+    public void tearDown() {
+        flyway.clean();
+    }
 
     @Test
     public void savesADevice() throws DeviceNotFound {
@@ -54,4 +61,14 @@ public class DeviceJDBCRepositoryTest {
         deviceRepository.getBy(UNKNOWN_IMEI);
     }
 
+    @Test
+    public void updatesADevice() throws DeviceNotFound {
+        Device device = anUpdatedDevice();
+
+        deviceRepository.save(aDevice());
+        deviceRepository.update(device);
+
+        Device updatedDevice = deviceRepository.getBy(device.getImei());
+        assertThat(updatedDevice, is(device));
+    }
 }

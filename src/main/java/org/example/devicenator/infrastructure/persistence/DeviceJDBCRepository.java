@@ -46,6 +46,22 @@ public class DeviceJDBCRepository implements DeviceRepository {
         }
     }
 
+    @Override
+    public void update(Device device) {
+        String updateDeviceQuery =
+                "UPDATE devices " +
+                "SET vendor = ?, model = ?, operatingSystem = ?, operatingSystemVersion = ? " +
+                "WHERE imei = ?";
+
+        jdbcTemplate.update(
+                updateDeviceQuery,
+                device.getVendor(),
+                device.getModel(),
+                device.getOperatingSystem(),
+                device.getOperatingSystemVersion(),
+                device.getImei());
+    }
+
     public class DeviceRowMapper implements RowMapper<Device> {
 
         @Override

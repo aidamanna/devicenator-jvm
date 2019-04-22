@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.example.devicenator.DeviceFixtures.aCreateRequestDeviceJson;
-import static org.example.devicenator.DeviceFixtures.aCreatedRequestDevice;
+import static org.example.devicenator.DeviceFixtures.aCreateRequestDevice;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -37,7 +37,7 @@ public class CreateDeviceControllerTest {
                 .content(aCreateRequestDeviceJson()))
                 .andExpect(status().isCreated());
 
-        verify(createDevice).execute(aCreatedRequestDevice());
+        verify(createDevice).execute(aCreateRequestDevice());
     }
 
     @Test

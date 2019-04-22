@@ -5,7 +5,7 @@ import org.example.devicenator.domain.device.DeviceRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.example.devicenator.DeviceFixtures.aCreatedRequestDevice;
+import static org.example.devicenator.DeviceFixtures.aCreateRequestDevice;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -23,7 +23,7 @@ public class CreateDeviceTest {
 
     @Test
     public void createsADevice() {
-        createDevice.execute(aCreatedRequestDevice());
+        createDevice.execute(aCreateRequestDevice());
 
         verify(deviceRepository).save(any(Device.class));
     }
