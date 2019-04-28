@@ -2,14 +2,13 @@ package org.example.devicenator.application.getdevice;
 
 import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.DeviceNotFound;
-import org.example.devicenator.domain.device.DeviceRepository;
+import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.example.devicenator.DeviceFixtures.IMEI;
 import static org.example.devicenator.DeviceFixtures.aDevice;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -17,12 +16,12 @@ import static org.mockito.Mockito.when;
 
 public class GetDeviceTest {
 
-    private DeviceRepository deviceRepository;
+    private DeviceJDBCRepository deviceRepository;
     private GetDevice getDevice;
 
     @Before
     public void setUp() {
-        deviceRepository = mock(DeviceRepository.class);
+        deviceRepository = mock(DeviceJDBCRepository.class);
         getDevice = new GetDevice(deviceRepository);
     }
 

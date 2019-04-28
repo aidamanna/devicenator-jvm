@@ -47,11 +47,12 @@ public class DeviceJDBCRepositoryTest {
 
     @Test
     public void savesADevice() throws DeviceAlreadyExists {
-        deviceRepository.save(aDevice());
+        Device device = aDevice();
+        deviceRepository.save(device);
 
         Integer deviceCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM devices WHERE imei = ?",
-                new Object[]{IMEI},
+                new Object[]{device.getImei()},
                 Integer.class);
 
         assertThat(deviceCount, is(1));
@@ -59,9 +60,10 @@ public class DeviceJDBCRepositoryTest {
 
     @Test(expected = DeviceAlreadyExists.class)
     public void throwsExceptionWhenSavingAnExistingDevice() throws DeviceAlreadyExists {
-        deviceRepository.save(aDevice());
+        Device device = aDevice();
+        deviceRepository.save(device);
 
-        deviceRepository.save(aDevice());
+        deviceRepository.save(device);
     }
 
     @Test
@@ -83,11 +85,30 @@ public class DeviceJDBCRepositoryTest {
     @Test
     public void updatesADevice() throws Exception {
         Device device = anUpdatedDevice();
-
         deviceRepository.save(aDevice());
+
         deviceRepository.update(device);
 
-        Device updatedDevice = deviceRepository.getBy(device.getImei());
-        assertThat(updatedDevice, is(device));
+        Integer deviceCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM devices WHERE imei = ? AND operatingSystemVersion = ?",
+                new Object[]{device.getImei(), device.getOperatingSystemVersion()},
+                Integer.class);
+
+        assertThat(deviceCount, is(1));
+    }
+
+    @Test
+    public void deletesADevice() throws DeviceAlreadyExists {
+        Device device = aDevice();
+        deviceRepository.save(device);
+
+        deviceRepository.delete(device.getImei());
+
+        Integer deviceCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM devices WHERE imei = ?",
+                new Object[]{device.getImei()},
+                Integer.class);
+
+        assertThat(deviceCount, is(0));
     }
 }

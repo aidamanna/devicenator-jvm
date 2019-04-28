@@ -44,10 +44,8 @@ public class GetDeviceControllerTest {
     public void returnsNotFoundWhenRetrievingANonExistingDevice() throws Exception {
         when(getDevice.execute(UNKNOWN_IMEI)).thenThrow(DeviceNotFound.class);
 
-        String errorBody = "{\"error\": \"NON_EXISTING_DEVICE\", \"reason\": \"The device is not registered\"}";
-
         mockMvc.perform(get("/devices/" + UNKNOWN_IMEI))
                 .andExpect(status().isNotFound())
-                .andExpect(content().json(errorBody));
+                .andExpect(content().json(aNonExistingDeviceResponseJson()));
     }
 }

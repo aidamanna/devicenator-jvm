@@ -40,7 +40,7 @@ public class DeviceJDBCRepository implements DeviceRepository {
 
     @Override
     public Device getBy(String imei) throws DeviceNotFound {
-        getDeviceByIdQuery = "SELECT * FROM devices WHERE imei=?";
+        getDeviceByIdQuery = "SELECT * FROM devices WHERE imei = ?";
 
         try {
             return jdbcTemplate.queryForObject(
@@ -66,6 +66,14 @@ public class DeviceJDBCRepository implements DeviceRepository {
                 device.getOperatingSystem(),
                 device.getOperatingSystemVersion(),
                 device.getImei());
+    }
+
+    public void delete(String imei) {
+        String deleteDeviceQuery = "DELETE devices WHERE imei = ?";
+
+        jdbcTemplate.update(
+                deleteDeviceQuery,
+                imei);
     }
 
     public class DeviceRowMapper implements RowMapper<Device> {

@@ -47,13 +47,11 @@ public class UpdateDeviceControllerTest {
     public void throwsNotFoundWhenTheDeviceDoesNotExist() throws Exception {
         doThrow(DeviceNotFound.class).when(updateDevice).execute(anUpdateRequestDevice());
 
-        String errorBody = "{\"error\": \"NON_EXISTING_DEVICE\", \"reason\": \"The device is not registered\"}";
-
         mockMvc.perform(put("/devices/" + IMEI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(anUpdateRequestDeviceJson()))
                 .andExpect(status().isNotFound())
-                .andExpect(content().json(errorBody));
+                .andExpect(content().json(aNonExistingDeviceResponseJson()));
     }
 
     @Test

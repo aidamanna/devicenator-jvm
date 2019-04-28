@@ -7,4 +7,6 @@ public interface DeviceRepository {
     Device getBy(String imei) throws DeviceNotFound;
 
     void update(Device device);
+
+    void delete(String imei);
 }

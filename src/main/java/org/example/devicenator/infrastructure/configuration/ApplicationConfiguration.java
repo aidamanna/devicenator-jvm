@@ -1,6 +1,7 @@
 package org.example.devicenator.infrastructure.configuration;
 
 import org.example.devicenator.application.createdevice.CreateDevice;
+import org.example.devicenator.application.deletedevice.DeleteDevice;
 import org.example.devicenator.application.getdevice.GetDevice;
 import org.example.devicenator.application.updatedevice.UpdateDevice;
 import org.example.devicenator.domain.device.DeviceRepository;
@@ -29,6 +30,11 @@ public class ApplicationConfiguration {
     @Bean
     public UpdateDevice updateDevice(DeviceRepository deviceRepository) {
         return new UpdateDevice(deviceRepository);
+    }
+
+    @Bean
+    public DeleteDevice deleteDevice(DeviceRepository deviceRepository) {
+        return new DeleteDevice(deviceRepository);
     }
 
     @Bean

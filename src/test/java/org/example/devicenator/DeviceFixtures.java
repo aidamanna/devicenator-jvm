@@ -74,4 +74,8 @@ public class DeviceFixtures {
                         "\"operatingSystemVersion\":\"%s\"}",
                 IMEI, VENDOR, MODEL, OPERATING_SYSTEM, OPERATING_SYSTEM_VERSION_11);
     }
+
+    public static String aNonExistingDeviceResponseJson() {
+        return "{\"error\": \"NON_EXISTING_DEVICE\", \"reason\": \"The device is not registered\"}";
+    }
 }

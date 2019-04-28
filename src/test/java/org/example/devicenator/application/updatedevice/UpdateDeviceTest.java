@@ -1,26 +1,22 @@
 package org.example.devicenator.application.updatedevice;
 
-import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.DeviceNotFound;
-import org.example.devicenator.domain.device.DeviceRepository;
+import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.example.devicenator.DeviceFixtures.aDevice;
-import static org.example.devicenator.DeviceFixtures.anUpdateRequestDevice;
-import static org.example.devicenator.DeviceFixtures.anUpdatedDevice;
-import static org.mockito.ArgumentMatchers.any;
+import static org.example.devicenator.DeviceFixtures.*;
 import static org.mockito.Mockito.*;
 
 public class UpdateDeviceTest {
 
-    DeviceRepository deviceRepository;
+    DeviceJDBCRepository deviceRepository;
     UpdateDevice updateDevice;
     UpdateRequestDevice device;
 
     @Before
     public void setUp() {
-        deviceRepository = mock(DeviceRepository.class);
+        deviceRepository = mock(DeviceJDBCRepository.class);
         updateDevice = new UpdateDevice(deviceRepository);
 
         device = anUpdateRequestDevice();
@@ -41,6 +37,6 @@ public class UpdateDeviceTest {
 
         updateDevice.execute(device);
 
-        verify(deviceRepository, times(0));
+        verify(deviceRepository, times(0)).update(anUpdatedDevice());
     }
 }
