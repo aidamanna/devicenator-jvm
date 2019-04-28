@@ -19,6 +19,11 @@ import static org.junit.Assert.assertThat;
 
 public class DeviceJDBCRepositoryTest {
 
+    public static final String IMEI = "990000862471854";
+    public static final String UNKNOWN_IMEI = "99000086247185";
+    public static final String OPERATING_SYSTEM_VERSION_10 = "10";
+    public static final String OPERATING_SYSTEM_VERSION_11 = "11";
+
     private DeviceRepository deviceRepository;
     private Flyway flyway;
     private JdbcTemplate jdbcTemplate;
@@ -47,12 +52,11 @@ public class DeviceJDBCRepositoryTest {
 
     @Test
     public void savesADevice() throws DeviceAlreadyExists {
-        Device device = aDevice();
-        deviceRepository.save(device);
+        deviceRepository.save(aDevice(IMEI));
 
         Integer deviceCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM devices WHERE imei = ?",
-                new Object[]{device.getImei()},
+                new Object[]{IMEI},
                 Integer.class);
 
         assertThat(deviceCount, is(1));
@@ -60,7 +64,7 @@ public class DeviceJDBCRepositoryTest {
 
     @Test(expected = DeviceAlreadyExists.class)
     public void throwsExceptionWhenSavingAnExistingDevice() throws DeviceAlreadyExists {
-        Device device = aDevice();
+        Device device = aDevice(IMEI);
         deviceRepository.save(device);
 
         deviceRepository.save(device);
@@ -68,11 +72,11 @@ public class DeviceJDBCRepositoryTest {
 
     @Test
     public void retrievesADevice() throws Exception {
-        Device device = aDevice();
+        Device device = aDevice(IMEI);
 
         deviceRepository.save(device);
 
-        Device savedDevice = deviceRepository.getBy(device.getImei());
+        Device savedDevice = deviceRepository.getBy(IMEI);
         assertThat(savedDevice, is(device));
     }
 
@@ -84,14 +88,13 @@ public class DeviceJDBCRepositoryTest {
 
     @Test
     public void updatesADevice() throws Exception {
-        Device device = anUpdatedDevice();
-        deviceRepository.save(aDevice());
+        deviceRepository.save(aDevice(IMEI, OPERATING_SYSTEM_VERSION_10));
 
-        deviceRepository.update(device);
+        deviceRepository.update(aDevice(IMEI, OPERATING_SYSTEM_VERSION_11));
 
         Integer deviceCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM devices WHERE imei = ? AND operatingSystemVersion = ?",
-                new Object[]{device.getImei(), device.getOperatingSystemVersion()},
+                new Object[]{IMEI, OPERATING_SYSTEM_VERSION_11},
                 Integer.class);
 
         assertThat(deviceCount, is(1));
@@ -99,14 +102,13 @@ public class DeviceJDBCRepositoryTest {
 
     @Test
     public void deletesADevice() throws DeviceAlreadyExists {
-        Device device = aDevice();
-        deviceRepository.save(device);
+        deviceRepository.save(aDevice(IMEI));
 
-        deviceRepository.delete(device.getImei());
+        deviceRepository.delete(IMEI);
 
         Integer deviceCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM devices WHERE imei = ?",
-                new Object[]{device.getImei()},
+                new Object[]{IMEI},
                 Integer.class);
 
         assertThat(deviceCount, is(0));

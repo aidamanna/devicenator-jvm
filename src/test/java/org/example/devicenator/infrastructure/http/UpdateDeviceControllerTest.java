@@ -1,5 +1,6 @@
 package org.example.devicenator.infrastructure.http;
 
+import org.example.devicenator.DeviceFixtures;
 import org.example.devicenator.application.updatedevice.UpdateDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.junit.Before;
@@ -17,6 +18,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UpdateDeviceControllerTest {
 
+    public static final String IMEI = "990000862471854";
+    public static final String UNKNOWN_IMEI = "990000862471855";
+    public static final String OPERATING_SYSTEM_VERSION = "11";
     private static final String EMPTY_REQUEST_BODY = "{}";
 
     private UpdateDevice updateDevice;
@@ -37,19 +41,20 @@ public class UpdateDeviceControllerTest {
     public void updatesADevice() throws Exception {
         mockMvc.perform(put("/devices/" + IMEI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(anUpdateRequestDeviceJson()))
+                .content(aDeviceJson(IMEI, OPERATING_SYSTEM_VERSION)))
                 .andExpect(status().isOk());
 
-        verify(updateDevice).execute(anUpdateRequestDevice());
+        verify(updateDevice).execute(anUpdateRequestDevice(IMEI, OPERATING_SYSTEM_VERSION));
     }
 
     @Test
     public void throwsNotFoundWhenTheDeviceDoesNotExist() throws Exception {
-        doThrow(DeviceNotFound.class).when(updateDevice).execute(anUpdateRequestDevice());
+        doThrow(DeviceNotFound.class).when(updateDevice)
+                .execute(anUpdateRequestDevice(UNKNOWN_IMEI, OPERATING_SYSTEM_VERSION));
 
-        mockMvc.perform(put("/devices/" + IMEI)
+        mockMvc.perform(put("/devices/" + UNKNOWN_IMEI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(anUpdateRequestDeviceJson()))
+                .content(DeviceFixtures.aDeviceJson(UNKNOWN_IMEI, OPERATING_SYSTEM_VERSION)))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(aNonExistingDeviceResponseJson()));
     }

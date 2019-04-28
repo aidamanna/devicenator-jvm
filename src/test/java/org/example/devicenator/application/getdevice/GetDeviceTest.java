@@ -6,7 +6,6 @@ import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.example.devicenator.DeviceFixtures.IMEI;
 import static org.example.devicenator.DeviceFixtures.aDevice;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -15,6 +14,8 @@ import static org.mockito.Mockito.when;
 
 
 public class GetDeviceTest {
+
+    public static final String IMEI = "990000862471854";
 
     private DeviceJDBCRepository deviceRepository;
     private GetDevice getDevice;
@@ -27,7 +28,7 @@ public class GetDeviceTest {
 
     @Test
     public void retrievesAnExistingDevice() throws DeviceNotFound {
-        Device expectedDevice = aDevice();
+        Device expectedDevice = aDevice(IMEI);
         when(deviceRepository.getBy(IMEI)).thenReturn(expectedDevice);
 
         Device device = getDevice.execute(IMEI);
