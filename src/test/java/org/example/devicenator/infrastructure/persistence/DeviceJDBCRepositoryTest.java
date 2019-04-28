@@ -3,6 +3,7 @@ package org.example.devicenator.infrastructure.persistence;
 import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
+import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.flywaydb.core.Flyway;
 import org.junit.After;
 import org.junit.Before;
@@ -12,9 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
-import static org.example.devicenator.DeviceFixtures.UNKNOWN_IMEI;
-import static org.example.devicenator.DeviceFixtures.aDevice;
-import static org.example.devicenator.DeviceFixtures.anUpdatedDevice;
+import static org.example.devicenator.DeviceFixtures.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -22,6 +21,7 @@ public class DeviceJDBCRepositoryTest {
 
     private DeviceRepository deviceRepository;
     private Flyway flyway;
+    private JdbcTemplate jdbcTemplate;
 
     @Before
     public void setUp() {
@@ -35,7 +35,7 @@ public class DeviceJDBCRepositoryTest {
         flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
 
         deviceRepository = new DeviceJDBCRepository(jdbcTemplate);
     }
@@ -46,7 +46,26 @@ public class DeviceJDBCRepositoryTest {
     }
 
     @Test
-    public void savesADevice() throws DeviceNotFound {
+    public void savesADevice() throws DeviceAlreadyExists {
+        deviceRepository.save(aDevice());
+
+        Integer deviceCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM devices WHERE imei = ?",
+                new Object[]{IMEI},
+                Integer.class);
+
+        assertThat(deviceCount, is(1));
+    }
+
+    @Test(expected = DeviceAlreadyExists.class)
+    public void throwsExceptionWhenSavingAnExistingDevice() throws DeviceAlreadyExists {
+        deviceRepository.save(aDevice());
+
+        deviceRepository.save(aDevice());
+    }
+
+    @Test
+    public void retrievesADevice() throws Exception {
         Device device = aDevice();
 
         deviceRepository.save(device);
@@ -62,7 +81,7 @@ public class DeviceJDBCRepositoryTest {
     }
 
     @Test
-    public void updatesADevice() throws DeviceNotFound {
+    public void updatesADevice() throws Exception {
         Device device = anUpdatedDevice();
 
         deviceRepository.save(aDevice());

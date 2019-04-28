@@ -1,6 +1,7 @@
 package org.example.devicenator.application.createdevice;
 
 import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class CreateDeviceTest {
     }
 
     @Test
-    public void createsADevice() {
+    public void createsADevice() throws DeviceAlreadyExists {
         createDevice.execute(aCreateRequestDevice());
 
         verify(deviceRepository).save(any(Device.class));

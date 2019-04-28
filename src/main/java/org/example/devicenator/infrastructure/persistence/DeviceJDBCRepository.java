@@ -1,8 +1,10 @@
 package org.example.devicenator.infrastructure.persistence;
 
 import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,16 +22,20 @@ public class DeviceJDBCRepository implements DeviceRepository {
     }
 
     @Override
-    public void save(Device device) {
+    public void save(Device device) throws DeviceAlreadyExists {
         String saveDeviceQuery = "INSERT INTO devices VALUES (?, ?, ?, ?, ?)";
 
-        jdbcTemplate.update(
-                saveDeviceQuery,
-                device.getImei(),
-                device.getVendor(),
-                device.getModel(),
-                device.getOperatingSystem(),
-                device.getOperatingSystemVersion());
+        try {
+            jdbcTemplate.update(
+                    saveDeviceQuery,
+                    device.getImei(),
+                    device.getVendor(),
+                    device.getModel(),
+                    device.getOperatingSystem(),
+                    device.getOperatingSystemVersion());
+        } catch (DuplicateKeyException e) {
+            throw new DeviceAlreadyExists();
+        }
     }
 
     @Override

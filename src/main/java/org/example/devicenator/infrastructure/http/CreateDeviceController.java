@@ -2,6 +2,7 @@ package org.example.devicenator.infrastructure.http;
 
 import org.example.devicenator.application.createdevice.CreateDevice;
 import org.example.devicenator.application.createdevice.CreateRequestDevice;
+import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class CreateDeviceController {
 
     @PostMapping("/devices")
     @ResponseStatus(HttpStatus.CREATED)
-    public void execute(@Valid @RequestBody CreateRequestDevice device) {
+    public void execute(@Valid @RequestBody CreateRequestDevice device) throws DeviceAlreadyExists {
         createDevice.execute(device);
     }
 }

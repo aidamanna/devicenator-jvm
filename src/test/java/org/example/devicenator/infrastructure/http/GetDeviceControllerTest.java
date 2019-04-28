@@ -47,7 +47,7 @@ public class GetDeviceControllerTest {
         String errorBody = "{\"error\": \"NON_EXISTING_DEVICE\", \"reason\": \"The device is not registered\"}";
 
         mockMvc.perform(get("/devices/" + UNKNOWN_IMEI))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(content().json(errorBody));
     }
 }

@@ -1,6 +1,7 @@
 package org.example.devicenator.application.createdevice;
 
 import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceRepository;
 
 public class CreateDevice {
@@ -10,7 +11,7 @@ public class CreateDevice {
         this.deviceRepository = deviceRepository;
     }
 
-    public void execute(CreateRequestDevice createRequestDevice) {
+    public void execute(CreateRequestDevice createRequestDevice) throws DeviceAlreadyExists {
         Device device = new Device(
                 createRequestDevice.getImei(),
                 createRequestDevice.getVendor(),
