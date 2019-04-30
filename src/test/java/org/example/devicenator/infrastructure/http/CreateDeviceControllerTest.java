@@ -1,5 +1,6 @@
 package org.example.devicenator.infrastructure.http;
 
+import org.slf4j.Logger;
 import org.example.devicenator.DeviceFixtures;
 import org.example.devicenator.application.createdevice.CreateDevice;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
@@ -23,12 +24,14 @@ public class CreateDeviceControllerTest {
     private static final String EMPTY_REQUEST_BODY = "{}";
 
     private MockMvc mockMvc;
+    private Logger logger;
     private CreateDevice createDevice;
 
     @Before
     public void setUp() {
+        logger = mock(Logger.class);
         createDevice = mock(CreateDevice.class);
-        CreateDeviceController createDeviceController = new CreateDeviceController(createDevice);
+        CreateDeviceController createDeviceController = new CreateDeviceController(createDevice, logger);
         mockMvc = MockMvcBuilders.standaloneSetup(createDeviceController)
                 .setControllerAdvice(GlobalExceptionHandler.class)
                 .build();
