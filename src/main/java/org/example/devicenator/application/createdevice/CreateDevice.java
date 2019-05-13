@@ -11,7 +11,7 @@ public class CreateDevice {
         this.deviceRepository = deviceRepository;
     }
 
-    public void execute(CreateRequestDevice createRequestDevice) throws DeviceAlreadyExists {
+    public void execute(CreateRequestDevice createRequestDevice) {
         Device device = new Device(
                 createRequestDevice.getImei(),
                 createRequestDevice.getVendor(),

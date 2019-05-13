@@ -68,6 +68,11 @@
             <artifactId>logstash-logback-encoder</artifactId>
             <version>5.3</version>
         </dependency>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>0.10.0</version>
+        </dependency>
     </dependencies>
 
     <build>

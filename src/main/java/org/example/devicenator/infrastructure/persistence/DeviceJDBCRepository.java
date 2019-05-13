@@ -1,5 +1,6 @@
 package org.example.devicenator.infrastructure.persistence;
 
+import io.vavr.control.Try;
 import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceRepository;
@@ -9,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import javax.xml.ws.Response;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -22,20 +24,18 @@ public class DeviceJDBCRepository implements DeviceRepository {
     }
 
     @Override
-    public void save(Device device) throws DeviceAlreadyExists {
+    public Try<Response> save(Device device) {
         String saveDeviceQuery = "INSERT INTO devices VALUES (?, ?, ?, ?, ?)";
 
-        try {
+        return Try.of(() ->
             jdbcTemplate.update(
                     saveDeviceQuery,
                     device.getImei(),
                     device.getVendor(),
                     device.getModel(),
                     device.getOperatingSystem(),
-                    device.getOperatingSystemVersion());
-        } catch (DuplicateKeyException e) {
-            throw new DeviceAlreadyExists();
-        }
+                    device.getOperatingSystemVersion())
+        );
     }
 
     @Override
