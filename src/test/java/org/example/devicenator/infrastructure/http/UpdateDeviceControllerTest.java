@@ -1,6 +1,5 @@
 package org.example.devicenator.infrastructure.http;
 
-import org.example.devicenator.DeviceFixtures;
 import org.example.devicenator.application.updatedevice.UpdateDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.junit.Before;
@@ -41,20 +40,20 @@ public class UpdateDeviceControllerTest {
     public void updatesADevice() throws Exception {
         mockMvc.perform(put("/devices/" + IMEI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(aDeviceJson(IMEI, OPERATING_SYSTEM_VERSION)))
+                .content(anUpdateDeviceJson(OPERATING_SYSTEM_VERSION)))
                 .andExpect(status().isOk());
 
-        verify(updateDevice).execute(anUpdateRequestDevice(IMEI, OPERATING_SYSTEM_VERSION));
+        verify(updateDevice).execute(IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
     }
 
     @Test
     public void throwsNotFoundWhenTheDeviceDoesNotExist() throws Exception {
         doThrow(DeviceNotFound.class).when(updateDevice)
-                .execute(anUpdateRequestDevice(UNKNOWN_IMEI, OPERATING_SYSTEM_VERSION));
+                .execute(UNKNOWN_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
 
         mockMvc.perform(put("/devices/" + UNKNOWN_IMEI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(DeviceFixtures.aDeviceJson(UNKNOWN_IMEI, OPERATING_SYSTEM_VERSION)))
+                .content(anUpdateDeviceJson(OPERATING_SYSTEM_VERSION)))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(aNonExistingDeviceResponseJson()));
     }
@@ -66,6 +65,6 @@ public class UpdateDeviceControllerTest {
                 .content(EMPTY_REQUEST_BODY))
                 .andExpect(status().isBadRequest());
 
-        verify(updateDevice, never()).execute(any());
+        verify(updateDevice, never()).execute(eq(IMEI), any());
     }
 }

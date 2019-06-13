@@ -13,14 +13,10 @@ public class UpdateDevice {
         this.deviceRepository = deviceRepository;
     }
 
-    public void execute(UpdateRequestDevice updateRequestDevice) throws DeviceNotFound {
-        Device device = deviceRepository.getBy(updateRequestDevice.getImei());
+    public void execute(String imei, UpdateRequestDevice updateRequestDevice) throws DeviceNotFound {
+        Device device = deviceRepository.getBy(imei);
 
-        Device updatedDevice = device.update(
-                updateRequestDevice.getVendor(),
-                updateRequestDevice.getModel(),
-                updateRequestDevice.getOperatingSystem(),
-                updateRequestDevice.getOperatingSystemVersion());
+        Device updatedDevice = device.update(updateRequestDevice.getOperatingSystemVersion());
 
         deviceRepository.update(updatedDevice);
     }

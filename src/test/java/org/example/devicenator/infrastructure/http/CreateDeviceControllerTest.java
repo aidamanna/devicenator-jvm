@@ -9,8 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.example.devicenator.DeviceFixtures.aDeviceJson;
-import static org.example.devicenator.DeviceFixtures.aCreateRequestDevice;
+import static org.example.devicenator.DeviceFixtures.aCreateDeviceJson;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,7 +38,7 @@ public class CreateDeviceControllerTest {
     public void createsADevice() throws Exception {
         mockMvc.perform(post("/devices")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(aDeviceJson(IMEI)))
+                .content(aCreateDeviceJson(IMEI)))
                 .andExpect(status().isCreated());
 
         verify(createDevice).execute(DeviceFixtures.aCreateRequestDevice(IMEI));
@@ -53,7 +52,7 @@ public class CreateDeviceControllerTest {
 
         mockMvc.perform(post("/devices")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(aDeviceJson(EXISTING_IMEI)))
+                .content(aCreateDeviceJson(EXISTING_IMEI)))
                 .andExpect(status().isConflict())
                 .andExpect(content().json(errorBody));
     }

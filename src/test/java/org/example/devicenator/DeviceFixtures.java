@@ -31,25 +31,21 @@ public class DeviceFixtures {
                 OPERATING_SYSTEM_VERSION);
     }
 
-    public static UpdateRequestDevice anUpdateRequestDevice(String imei, String operatingSystemVersion) {
-        return new UpdateRequestDevice(imei,
-                VENDOR,
-                MODEL,
-                OPERATING_SYSTEM,
-                operatingSystemVersion);
+    public static UpdateRequestDevice anUpdateRequestDevice(String operatingSystemVersion) {
+        return new UpdateRequestDevice(operatingSystemVersion);
     }
 
-    public static String aDeviceJson(String imei) {
-        return aDeviceJson(imei, OPERATING_SYSTEM_VERSION);
-    }
-
-    public static String aDeviceJson(String imei, String operatingSystemVersion) {
+    public static String aCreateDeviceJson(String imei) {
         return String.format("{\"imei\":\"%s\"," +
                         "\"vendor\":\"%s\"," +
                         "\"model\":\"%s\"," +
                         "\"operatingSystem\":\"%s\"," +
                         "\"operatingSystemVersion\":\"%s\"}",
-                imei, VENDOR, MODEL, OPERATING_SYSTEM, operatingSystemVersion);
+                imei, VENDOR, MODEL, OPERATING_SYSTEM, OPERATING_SYSTEM_VERSION);
+    }
+
+    public static String anUpdateDeviceJson(String operatingSystemVersion) {
+        return String.format("{\"operatingSystemVersion\":\"%s\"}", operatingSystemVersion);
     }
 
     public static String aNonExistingDeviceResponseJson() {
