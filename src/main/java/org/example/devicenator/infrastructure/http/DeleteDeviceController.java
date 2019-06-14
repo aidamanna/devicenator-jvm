@@ -1,7 +1,6 @@
 package org.example.devicenator.infrastructure.http;
 
 import org.example.devicenator.application.deletedevice.DeleteDevice;
-import org.example.devicenator.domain.device.DeviceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +20,7 @@ public class DeleteDeviceController {
 
     @DeleteMapping("/devices/{imei}")
     @ResponseStatus(HttpStatus.OK)
-    public void execute(@PathVariable String imei) throws DeviceNotFound {
+    public void execute(@PathVariable String imei) {
         deleteDevice.execute(imei);
     }
 }

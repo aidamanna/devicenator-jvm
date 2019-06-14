@@ -1,6 +1,5 @@
 package org.example.devicenator.application.deletedevice;
 
-import org.example.devicenator.domain.device.DeviceNotFound;
 import org.example.devicenator.domain.device.DeviceRepository;
 
 public class DeleteDevice {
@@ -11,9 +10,7 @@ public class DeleteDevice {
         this.deviceRepository = deviceRepository;
     }
 
-    public void execute(String imei) throws DeviceNotFound {
-        deviceRepository.getBy(imei);
-
+    public void execute(String imei) {
         deviceRepository.delete(imei);
     }
 }

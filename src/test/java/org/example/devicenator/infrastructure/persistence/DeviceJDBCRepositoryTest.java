@@ -113,4 +113,16 @@ public class DeviceJDBCRepositoryTest {
 
         assertThat(deviceCount, is(0));
     }
+
+    @Test
+    public void doesNotThrowAnExceptionWhenDeletingNonExistingDevices() {
+        deviceRepository.delete(UNKNOWN_IMEI);
+
+        Integer deviceCount = jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM devices WHERE imei = ?",
+            new Object[]{IMEI},
+            Integer.class);
+
+        assertThat(deviceCount, is(0));
+    }
 }
