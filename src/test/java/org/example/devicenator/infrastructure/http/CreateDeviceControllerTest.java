@@ -18,8 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class CreateDeviceControllerTest {
 
-    public static final String IMEI = "990000862471854";
-    public static final String EXISTING_IMEI = "990000862471856";
+    public static final String IMEI = "990000862471853";
+    public static final String EXISTING_IMEI = "990000862471853";
     private static final String EMPTY_REQUEST_BODY = "{}";
 
     private MockMvc mockMvc;

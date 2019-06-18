@@ -1,9 +1,9 @@
 package org.example.devicenator.application.createdevice;
 
+import javax.validation.constraints.NotNull;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 @AllArgsConstructor
 @Getter
@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 @ToString
 public class CreateRequestDevice {
 
-    @NotBlank @Pattern(regexp="\\d{15}")
+    @NotNull @Imei
     private final String imei;
 
     @NotBlank
