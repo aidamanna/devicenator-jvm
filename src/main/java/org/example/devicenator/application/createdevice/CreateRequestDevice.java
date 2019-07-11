@@ -5,24 +5,26 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @EqualsAndHashCode
 @ToString
 public class CreateRequestDevice {
 
     @NotNull @Imei
-    private final String imei;
+    private String imei;
 
     @NotBlank
-    private final String vendor;
+    private String vendor;
 
     @NotBlank
-    private final String model;
+    private String model;
 
     @NotBlank
-    private final String operatingSystem;
+    private String operatingSystem;
 
     @NotBlank
-    private final String operatingSystemVersion;
+    private String operatingSystemVersion;
 }

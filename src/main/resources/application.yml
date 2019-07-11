@@ -1,7 +1,4 @@
 spring:
-  http.converters:
-    preferred-json-mapper: gson
-
   h2:
     console:
       enabled: true
