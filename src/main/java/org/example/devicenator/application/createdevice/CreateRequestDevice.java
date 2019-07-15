@@ -1,7 +1,6 @@
 package org.example.devicenator.application.createdevice;
 
-import javax.validation.constraints.NotNull;
-import lombok.*;
+.import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -13,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class CreateRequestDevice {
 
-    @NotNull @Imei
+    @NotBlank
     private String imei;
 
     @NotBlank
