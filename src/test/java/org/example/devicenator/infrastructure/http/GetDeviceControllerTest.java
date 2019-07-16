@@ -17,8 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class GetDeviceControllerTest {
 
-    public static final String IMEI = "990000862471854";
-    public static final String UNKNOWN_IMEI = "99000086247185";
+    public static final String IMEI = "990000862471853";
+    public static final String UNKNOWN_IMEI = "990000862471853";
 
     private GetDevice getDevice;
     private GetDeviceController getDeviceController;
@@ -35,7 +35,7 @@ public class GetDeviceControllerTest {
 
     @Test
     public void retrievesAnExistingDevice() throws Exception {
-        when(getDevice.execute(IMEI)).thenReturn(anOldDevice(IMEI));
+        when(getDevice.execute(IMEI)).thenReturn(aDevice(IMEI));
 
         mockMvc.perform(get("/devices/" + IMEI))
                                 .andExpect(status().isOk())

@@ -1,8 +1,12 @@
 package org.example.devicenator.domain.device;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@EqualsAndHashCode
+@ToString
 public class Imei {
 
     public static final int IMEI_LENGTH = 15;

@@ -17,8 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UpdateDeviceControllerTest {
 
-    public static final String IMEI = "990000862471854";
-    public static final String UNKNOWN_IMEI = "990000862471855";
+    public static final String IMEI = "990000862471853";
+    public static final String UNKNOWN_IMEI = "990000862471853";
     public static final String OPERATING_SYSTEM_VERSION = "11";
     private static final String EMPTY_REQUEST_BODY = "{}";
 
