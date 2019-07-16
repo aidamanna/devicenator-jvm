@@ -1,6 +1,7 @@
 package org.example.devicenator.infrastructure.persistence;
 
 import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.Imei;
 import org.example.devicenator.domain.device.InvalidImei;
 import org.example.devicenator.domain.device.OldDevice;
 import org.example.devicenator.domain.device.DeviceRepository;
@@ -22,7 +23,7 @@ import static org.junit.Assert.assertThat;
 public class DeviceJDBCRepositoryTest {
 
     public static final String IMEI = "990000862471853";
-    public static final String UNKNOWN_IMEI = "99000086247185";
+    public static final String UNKNOWN_IMEI = "990000862471853";
     public static final String OPERATING_SYSTEM_VERSION_10 = "10";
     public static final String OPERATING_SYSTEM_VERSION_11 = "11";
 
@@ -93,7 +94,7 @@ public class DeviceJDBCRepositoryTest {
     }
 
     @Test
-    public void retrievesADevice() throws Exception {
+    public void retrievesAnOldDevice() throws Exception {
         OldDevice device = anOldDevice(IMEI);
 
         deviceRepository.save(device);
@@ -102,10 +103,25 @@ public class DeviceJDBCRepositoryTest {
         assertThat(savedDevice, is(device));
     }
 
+    @Test
+    public void retrievesADevice() throws Exception {
+        Device device = aDevice(IMEI);
+
+        deviceRepository.save(device);
+
+        Device savedDevice = deviceRepository.getBy(Imei.create(IMEI));
+        assertThat(savedDevice, is(device));
+    }
+
 
     @Test(expected = DeviceNotFound.class)
-    public void throwsExceptionWhenRetrievingANonExistingDevice() throws DeviceNotFound {
+    public void throwsExceptionWhenRetrievingANonExistingOldDevice() throws DeviceNotFound {
         deviceRepository.getBy(UNKNOWN_IMEI);
+    }
+
+    @Test(expected = DeviceNotFound.class)
+    public void throwsExceptionWhenRetrievingANonExistingDevice() throws DeviceNotFound, InvalidImei {
+        deviceRepository.getBy(Imei.create(UNKNOWN_IMEI));
     }
 
     @Test

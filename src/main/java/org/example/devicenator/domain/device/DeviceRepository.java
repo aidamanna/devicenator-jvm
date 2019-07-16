@@ -8,6 +8,8 @@ public interface DeviceRepository {
 
     OldDevice getBy(String imei) throws DeviceNotFound;
 
+    Device getBy(Imei imei) throws DeviceNotFound;
+
     void update(OldDevice device);
 
     void delete(String imei);

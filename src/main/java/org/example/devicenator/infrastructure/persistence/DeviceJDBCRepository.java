@@ -1,6 +1,8 @@
 package org.example.devicenator.infrastructure.persistence;
 
 import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.Imei;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.example.devicenator.domain.device.OldDevice;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceRepository;
@@ -64,7 +66,21 @@ public class DeviceJDBCRepository implements DeviceRepository {
             return jdbcTemplate.queryForObject(
                     getDeviceByIdQuery,
                     new Object[]{imei},
-                    new DeviceRowMapper());
+                    new OldDeviceRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            throw new DeviceNotFound();
+        }
+    }
+
+    @Override
+    public Device getBy(Imei imei) throws DeviceNotFound {
+        getDeviceByIdQuery = "SELECT * FROM devices WHERE imei = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(
+                getDeviceByIdQuery,
+                new Object[]{imei.getImei()},
+                new DeviceRowMapper());
         } catch (EmptyResultDataAccessException e) {
             throw new DeviceNotFound();
         }
@@ -94,7 +110,7 @@ public class DeviceJDBCRepository implements DeviceRepository {
                 imei);
     }
 
-    public class DeviceRowMapper implements RowMapper<OldDevice> {
+    public class OldDeviceRowMapper implements RowMapper<OldDevice> {
 
         @Override
         public OldDevice mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -104,6 +120,23 @@ public class DeviceJDBCRepository implements DeviceRepository {
                     rs.getString("model"),
                     rs.getString("operatingSystem"),
                     rs.getString("operatingSystemVersion"));
+        }
+    }
+
+    public class DeviceRowMapper implements RowMapper<Device> {
+
+        @Override
+        public Device mapRow(ResultSet rs, int rowNum) throws SQLException {
+            try {
+                return new Device(
+                    Imei.create(rs.getString("imei")),
+                    rs.getString("vendor"),
+                    rs.getString("model"),
+                    rs.getString("operatingSystem"),
+                    rs.getString("operatingSystemVersion"));
+            } catch (InvalidImei e) {
+                throw new SQLException();
+            }
         }
     }
 }
