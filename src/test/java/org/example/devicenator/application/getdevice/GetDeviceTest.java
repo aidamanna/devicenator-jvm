@@ -1,6 +1,6 @@
 package org.example.devicenator.application.getdevice;
 
-import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.OldDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
@@ -28,10 +28,10 @@ public class GetDeviceTest {
 
     @Test
     public void retrievesAnExistingDevice() throws DeviceNotFound {
-        Device expectedDevice = aDevice(IMEI);
+        OldDevice expectedDevice = aDevice(IMEI);
         when(deviceRepository.getBy(IMEI)).thenReturn(expectedDevice);
 
-        Device device = getDevice.execute(IMEI);
+        OldDevice device = getDevice.execute(IMEI);
 
         assertThat(device, is(expectedDevice));
     }

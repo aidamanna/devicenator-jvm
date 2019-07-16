@@ -11,13 +11,13 @@ import lombok.ToString;
 @ToString
 public class Device {
 
-    private final String imei;
-    private final String vendor;
-    private final String model;
-    private final String operatingSystem;
-    private final String operatingSystemVersion;
+  private final Imei imei;
+  private final String vendor;
+  private final String model;
+  private final String operatingSystem;
+  private final String operatingSystemVersion;
 
-    public Device update(String operatingSystemVersion) {
-        return new Device(imei, vendor, model, operatingSystem, operatingSystemVersion);
-    }
+  public Device update(String operatingSystemVersion) {
+    return new Device(imei, vendor, model, operatingSystem, operatingSystemVersion);
+  }
 }

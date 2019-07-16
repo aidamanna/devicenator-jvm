@@ -1,7 +1,7 @@
 package org.example.devicenator.infrastructure.http;
 
 import org.example.devicenator.application.getdevice.GetDevice;
-import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.OldDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,8 @@ public class GetDeviceController {
 
     @GetMapping("/devices/{imei}")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Device execute(@PathVariable String imei) throws DeviceNotFound {
+    public @ResponseBody
+    OldDevice execute(@PathVariable String imei) throws DeviceNotFound {
         return getDevice.execute(imei);
     }
 }

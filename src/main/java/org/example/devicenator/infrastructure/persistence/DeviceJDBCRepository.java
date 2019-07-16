@@ -1,6 +1,7 @@
 package org.example.devicenator.infrastructure.persistence;
 
 import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.OldDevice;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
@@ -22,7 +23,7 @@ public class DeviceJDBCRepository implements DeviceRepository {
     }
 
     @Override
-    public void save(Device device) throws DeviceAlreadyExists {
+    public void save(OldDevice device) throws DeviceAlreadyExists {
         String saveDeviceQuery = "INSERT INTO devices VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -39,7 +40,7 @@ public class DeviceJDBCRepository implements DeviceRepository {
     }
 
     @Override
-    public Device getBy(String imei) throws DeviceNotFound {
+    public OldDevice getBy(String imei) throws DeviceNotFound {
         getDeviceByIdQuery = "SELECT * FROM devices WHERE imei = ?";
 
         try {
@@ -53,7 +54,7 @@ public class DeviceJDBCRepository implements DeviceRepository {
     }
 
     @Override
-    public void update(Device device) {
+    public void update(OldDevice device) {
         String updateDeviceQuery =
                 "UPDATE devices " +
                 "SET vendor = ?, model = ?, operatingSystem = ?, operatingSystemVersion = ? " +
@@ -76,11 +77,11 @@ public class DeviceJDBCRepository implements DeviceRepository {
                 imei);
     }
 
-    public class DeviceRowMapper implements RowMapper<Device> {
+    public class DeviceRowMapper implements RowMapper<OldDevice> {
 
         @Override
-        public Device mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Device(
+        public OldDevice mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new OldDevice(
                     rs.getString("imei"),
                     rs.getString("vendor"),
                     rs.getString("model"),

@@ -1,6 +1,6 @@
 package org.example.devicenator.infrastructure.persistence;
 
-import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.OldDevice;
 import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
@@ -64,7 +64,7 @@ public class DeviceJDBCRepositoryTest {
 
     @Test(expected = DeviceAlreadyExists.class)
     public void throwsExceptionWhenSavingAnExistingDevice() throws DeviceAlreadyExists {
-        Device device = aDevice(IMEI);
+        OldDevice device = aDevice(IMEI);
         deviceRepository.save(device);
 
         deviceRepository.save(device);
@@ -72,11 +72,11 @@ public class DeviceJDBCRepositoryTest {
 
     @Test
     public void retrievesADevice() throws Exception {
-        Device device = aDevice(IMEI);
+        OldDevice device = aDevice(IMEI);
 
         deviceRepository.save(device);
 
-        Device savedDevice = deviceRepository.getBy(IMEI);
+        OldDevice savedDevice = deviceRepository.getBy(IMEI);
         assertThat(savedDevice, is(device));
     }
 

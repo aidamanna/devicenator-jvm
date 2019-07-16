@@ -1,7 +1,7 @@
 package org.example.devicenator.application.updatedevice;
 
 import org.example.devicenator.DeviceFixtures;
-import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.OldDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
@@ -27,7 +27,7 @@ public class UpdateDeviceTest {
 
     @Test
     public void updatesADevice() throws DeviceNotFound {
-        Device device = aDevice(IMEI, OPERATING_SYSTEM_VERSION);
+        OldDevice device = aDevice(IMEI, OPERATING_SYSTEM_VERSION);
         when(deviceRepository.getBy(IMEI)).thenReturn(device);
 
         updateDevice.execute(IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));

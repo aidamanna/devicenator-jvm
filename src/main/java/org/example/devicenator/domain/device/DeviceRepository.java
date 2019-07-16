@@ -2,11 +2,11 @@ package org.example.devicenator.domain.device;
 
 public interface DeviceRepository {
 
-    void save(Device device) throws DeviceAlreadyExists;
+    void save(OldDevice device) throws DeviceAlreadyExists;
 
-    Device getBy(String imei) throws DeviceNotFound;
+    OldDevice getBy(String imei) throws DeviceNotFound;
 
-    void update(Device device);
+    void update(OldDevice device);
 
     void delete(String imei);
 }
