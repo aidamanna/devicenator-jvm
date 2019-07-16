@@ -40,6 +40,23 @@ public class DeviceJDBCRepository implements DeviceRepository {
     }
 
     @Override
+    public void save(Device device) throws DeviceAlreadyExists {
+        String saveDeviceQuery = "INSERT INTO devices VALUES (?, ?, ?, ?, ?)";
+
+        try {
+            jdbcTemplate.update(
+                saveDeviceQuery,
+                device.getImei(),
+                device.getVendor(),
+                device.getModel(),
+                device.getOperatingSystem(),
+                device.getOperatingSystemVersion());
+        } catch (DuplicateKeyException e) {
+            throw new DeviceAlreadyExists();
+        }
+    }
+
+    @Override
     public OldDevice getBy(String imei) throws DeviceNotFound {
         getDeviceByIdQuery = "SELECT * FROM devices WHERE imei = ?";
 

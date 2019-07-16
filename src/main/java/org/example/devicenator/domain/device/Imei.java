@@ -1,5 +1,8 @@
 package org.example.devicenator.domain.device;
 
+import lombok.Getter;
+
+@Getter
 public class Imei {
 
     public static final int IMEI_LENGTH = 15;

@@ -1,12 +1,13 @@
 package org.example.devicenator.application.getdevice;
 
+import org.example.devicenator.DeviceFixtures;
 import org.example.devicenator.domain.device.OldDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.example.devicenator.DeviceFixtures.aDevice;
+import static org.example.devicenator.DeviceFixtures.anOldDevice;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -28,7 +29,7 @@ public class GetDeviceTest {
 
     @Test
     public void retrievesAnExistingDevice() throws DeviceNotFound {
-        OldDevice expectedDevice = aDevice(IMEI);
+        OldDevice expectedDevice = DeviceFixtures.anOldDevice(IMEI);
         when(deviceRepository.getBy(IMEI)).thenReturn(expectedDevice);
 
         OldDevice device = getDevice.execute(IMEI);

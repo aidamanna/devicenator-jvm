@@ -35,7 +35,7 @@ public class GetDeviceControllerTest {
 
     @Test
     public void retrievesAnExistingDevice() throws Exception {
-        when(getDevice.execute(IMEI)).thenReturn(aDevice(IMEI));
+        when(getDevice.execute(IMEI)).thenReturn(anOldDevice(IMEI));
 
         mockMvc.perform(get("/devices/" + IMEI))
                                 .andExpect(status().isOk())

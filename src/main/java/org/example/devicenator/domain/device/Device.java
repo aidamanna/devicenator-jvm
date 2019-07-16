@@ -17,6 +17,10 @@ public class Device {
   private final String operatingSystem;
   private final String operatingSystemVersion;
 
+  public String getImei() {
+    return this.imei.getImei();
+  }
+
   public Device update(String operatingSystemVersion) {
     return new Device(imei, vendor, model, operatingSystem, operatingSystemVersion);
   }

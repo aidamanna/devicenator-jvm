@@ -27,7 +27,7 @@ public class UpdateDeviceTest {
 
     @Test
     public void updatesADevice() throws DeviceNotFound {
-        OldDevice device = aDevice(IMEI, OPERATING_SYSTEM_VERSION);
+        OldDevice device = anOldDevice(IMEI, OPERATING_SYSTEM_VERSION);
         when(deviceRepository.getBy(IMEI)).thenReturn(device);
 
         updateDevice.execute(IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
@@ -42,6 +42,6 @@ public class UpdateDeviceTest {
         updateDevice.execute(UNKNOWN_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
 
         verify(deviceRepository, times(0))
-                .update(DeviceFixtures.aDevice(UNKNOWN_IMEI, OPERATING_SYSTEM_VERSION));
+                .update(DeviceFixtures.anOldDevice(UNKNOWN_IMEI, OPERATING_SYSTEM_VERSION));
     }
 }

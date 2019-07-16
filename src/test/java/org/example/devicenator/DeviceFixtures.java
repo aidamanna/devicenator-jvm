@@ -2,6 +2,9 @@ package org.example.devicenator;
 
 import org.example.devicenator.application.createdevice.CreateRequestDevice;
 import org.example.devicenator.application.updatedevice.UpdateRequestDevice;
+import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.Imei;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.example.devicenator.domain.device.OldDevice;
 
 public class DeviceFixtures {
@@ -11,16 +14,24 @@ public class DeviceFixtures {
     public static final String OPERATING_SYSTEM = "iOS";
     public static final String OPERATING_SYSTEM_VERSION = "10";
 
-    public static OldDevice aDevice(String imei) {
-        return aDevice(imei, OPERATING_SYSTEM_VERSION);
+    public static OldDevice anOldDevice(String imei) {
+        return anOldDevice(imei, OPERATING_SYSTEM_VERSION);
     }
 
-    public static OldDevice aDevice(String imei, String operatingSystemVersion) {
+    public static OldDevice anOldDevice(String imei, String operatingSystemVersion) {
         return new OldDevice(imei,
                 VENDOR,
                 MODEL,
                 OPERATING_SYSTEM,
                 operatingSystemVersion);
+    }
+
+    public static Device aDevice(String imei) throws InvalidImei {
+        return new Device(Imei.create(imei),
+                VENDOR,
+                MODEL,
+                OPERATING_SYSTEM,
+                OPERATING_SYSTEM_VERSION);
     }
 
     public static CreateRequestDevice aCreateRequestDevice(String imei) {
