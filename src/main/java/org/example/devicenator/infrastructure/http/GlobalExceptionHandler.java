@@ -2,6 +2,7 @@ package org.example.devicenator.infrastructure.http;
 
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceNotFound;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,5 +33,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String responseBody = "{\"error\": \"EXISTING_DEVICE\", \"reason\": \"The device is registered\"}";
 
         return handleExceptionInternal(exception, responseBody, headers, HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler({InvalidImei.class})
+    protected ResponseEntity<Object> handleInvalidImei(Exception exception, WebRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String responseBody = "{\"error\": \"INVALID_IMEI\", \"reason\": \"The device imei is invalid\"}";
+
+        return handleExceptionInternal(exception, responseBody, headers, HttpStatus.BAD_REQUEST, request);
     }
 }
