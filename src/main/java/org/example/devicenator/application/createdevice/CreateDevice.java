@@ -1,8 +1,10 @@
 package org.example.devicenator.application.createdevice;
 
+import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceRepository;
-import org.example.devicenator.domain.device.OldDevice;
+import org.example.devicenator.domain.device.Imei;
+import org.example.devicenator.domain.device.InvalidImei;
 
 public class CreateDevice {
 
@@ -13,9 +15,9 @@ public class CreateDevice {
   }
 
   public void execute(CreateRequestDevice createRequestDevice)
-      throws DeviceAlreadyExists {
-    OldDevice device = new OldDevice(
-        createRequestDevice.getImei(),
+      throws DeviceAlreadyExists, InvalidImei {
+    Device device = new Device(
+        Imei.create(createRequestDevice.getImei()),
         createRequestDevice.getVendor(),
         createRequestDevice.getModel(),
         createRequestDevice.getOperatingSystem(),
