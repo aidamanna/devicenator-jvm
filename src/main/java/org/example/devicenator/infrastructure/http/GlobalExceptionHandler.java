@@ -20,7 +20,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String responseBody = "{\"error\": \"NON_EXISTING_DEVICE\", \"reason\": \"The device is not registered\"}";
+        String responseBody =
+                String.format("{\"error\": \"NON_EXISTING_DEVICE\", \"reason\": \"%s\"}", exception.getMessage());
 
         return handleExceptionInternal(exception, responseBody, headers, HttpStatus.NOT_FOUND, request);
     }
@@ -30,7 +31,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String responseBody = "{\"error\": \"EXISTING_DEVICE\", \"reason\": \"The device is registered\"}";
+        String responseBody =
+                String.format("{\"error\": \"EXISTING_DEVICE\", \"reason\": \"%s\"}", exception.getMessage());
 
         return handleExceptionInternal(exception, responseBody, headers, HttpStatus.CONFLICT, request);
     }
@@ -40,7 +42,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String responseBody = "{\"error\": \"INVALID_IMEI\", \"reason\": \"The device imei is invalid\"}";
+        String responseBody =
+                String.format("{\"error\": \"INVALID_IMEI\", \"reason\": \"%s\"}", exception.getMessage());
 
         return handleExceptionInternal(exception, responseBody, headers, HttpStatus.BAD_REQUEST, request);
     }

@@ -1,8 +1,9 @@
-package org.example.devicenator.infrastructure.http;
+package org.example.devicenator.infrastructure.http.device;
 
 import org.example.devicenator.application.getdevice.GetDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.example.devicenator.domain.device.InvalidImei;
+import org.example.devicenator.infrastructure.http.GlobalExceptionHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,9 +18,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class GetDeviceControllerTest {
 
-    public static final String RAW_IMEI = "990000862471853";
-    public static final String UNKNOWN_RAW_IMEI = "990000862471853";
-    public static final String INVALID_RAW_IMEI = "990000862471855";
+    private static final String RAW_IMEI = "990000862471853";
+    private static final String UNKNOWN_RAW_IMEI = "990000862471853";
+    private static final String INVALID_RAW_IMEI = "990000862471855";
 
     private GetDevice getDevice;
     private GetDeviceController getDeviceController;
@@ -46,7 +47,7 @@ public class GetDeviceControllerTest {
 
     @Test
     public void returnsNotFoundWhenRetrievingANonExistingDevice() throws Exception {
-        when(getDevice.execute(UNKNOWN_RAW_IMEI)).thenThrow(DeviceNotFound.class);
+        when(getDevice.execute(UNKNOWN_RAW_IMEI)).thenThrow(new DeviceNotFound());
 
         mockMvc.perform(get("/devices/" + UNKNOWN_RAW_IMEI))
                 .andExpect(status().isNotFound())
@@ -55,7 +56,7 @@ public class GetDeviceControllerTest {
 
     @Test
     public void returnsBadRequestWhenImeiIsInvalid() throws Exception {
-        when(getDevice.execute(INVALID_RAW_IMEI)).thenThrow(InvalidImei.class);
+        when(getDevice.execute(INVALID_RAW_IMEI)).thenThrow(new InvalidImei("The device imei is invalid"));
 
         mockMvc.perform(get("/devices/" + INVALID_RAW_IMEI))
                 .andExpect(status().isBadRequest())

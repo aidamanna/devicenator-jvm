@@ -1,6 +1,7 @@
-package org.example.devicenator.infrastructure.http;
+package org.example.devicenator.infrastructure.http.device;
 
 import org.example.devicenator.domain.device.InvalidImei;
+import org.example.devicenator.infrastructure.http.GlobalExceptionHandler;
 import org.slf4j.Logger;
 import org.example.devicenator.application.createdevice.CreateDevice;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
@@ -19,9 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class CreateDeviceControllerTest {
 
-    public static final String RAW_IMEI = "990000862471853";
-    public static final String EXISTING_RAW_IMEI = "990000862471853";
-    public static final String INVALID_RAW_IMEI = "990000862471855";
+    private static final String RAW_IMEI = "990000862471853";
+    private static final String EXISTING_RAW_IMEI = "990000862471853";
+    private static final String INVALID_RAW_IMEI = "990000862471855";
     private static final String EMPTY_REQUEST_BODY = "{}";
 
     private MockMvc mockMvc;
@@ -49,21 +50,20 @@ public class CreateDeviceControllerTest {
     }
 
     @Test
-    public void throwsConflictWhenTheDeviceAlreadyExists() throws Exception {
-        doThrow(DeviceAlreadyExists.class).when(createDevice).execute(aCreateRequestDevice(EXISTING_RAW_IMEI));
-
-        String errorBody = "{\"error\": \"EXISTING_DEVICE\", \"reason\": \"The device is registered\"}";
+    public void returnsConflictWhenTheDeviceAlreadyExists() throws Exception {
+        doThrow(new DeviceAlreadyExists()).when(createDevice).execute(aCreateRequestDevice(EXISTING_RAW_IMEI));
 
         mockMvc.perform(post("/devices")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(aCreateDeviceJson(EXISTING_RAW_IMEI)))
                 .andExpect(status().isConflict())
-                .andExpect(content().json(errorBody));
+                .andExpect(content().json(aExistingDeviceResponseJson()));
     }
 
     @Test
-    public void throwsBadRequestWhenImeiIsInvalid() throws Exception {
-        doThrow(InvalidImei.class).when(createDevice).execute(aCreateRequestDevice(INVALID_RAW_IMEI));
+    public void returnsBadRequestWhenImeiIsInvalid() throws Exception {
+        doThrow(new InvalidImei("The device imei is invalid"))
+                .when(createDevice).execute(aCreateRequestDevice(INVALID_RAW_IMEI));
 
         mockMvc.perform(post("/devices")
             .contentType(MediaType.APPLICATION_JSON)

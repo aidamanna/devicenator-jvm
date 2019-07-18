@@ -10,9 +10,9 @@ import static org.mockito.Mockito.*;
 
 public class UpdateDeviceTest {
 
-    public static final String RAW_IMEI = "990000862471853";
-    public static final String UNKNOWN_RAW_IMEI = "990000862471853";
-    public static final String OPERATING_SYSTEM_VERSION = "11";
+    private static final String RAW_IMEI = "990000862471853";
+    private static final String UNKNOWN_RAW_IMEI = "990000862471853";
+    private static final String OPERATING_SYSTEM_VERSION = "11";
 
     DeviceJDBCRepository deviceRepository;
     UpdateDevice updateDevice;
@@ -24,7 +24,7 @@ public class UpdateDeviceTest {
     }
 
     @Test
-    public void updatesADevice() throws DeviceNotFound, InvalidImei {
+    public void updatesADevice() throws DeviceException {
         Device device = aDevice(RAW_IMEI, OPERATING_SYSTEM_VERSION);
         when(deviceRepository.getBy(Imei.create(RAW_IMEI))).thenReturn(device);
 
@@ -34,7 +34,7 @@ public class UpdateDeviceTest {
     }
 
     @Test(expected = DeviceNotFound.class)
-    public void throwsAnExceptionWhenUpdatingANonExistingDevice() throws DeviceNotFound, InvalidImei {
+    public void throwsAnExceptionWhenUpdatingANonExistingDevice() throws DeviceException {
         when(deviceRepository.getBy(Imei.create(UNKNOWN_RAW_IMEI))).thenThrow(DeviceNotFound.class);
 
         updateDevice.execute(UNKNOWN_RAW_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));

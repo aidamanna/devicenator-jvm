@@ -8,10 +8,10 @@ import org.example.devicenator.domain.device.InvalidImei;
 
 public class DeviceFixtures {
 
-    public static final String VENDOR = "iPhone";
-    public static final String MODEL = "iPhone X";
-    public static final String OPERATING_SYSTEM = "iOS";
-    public static final String OPERATING_SYSTEM_VERSION = "10";
+    private static final String VENDOR = "iPhone";
+    private static final String MODEL = "iPhone X";
+    private static final String OPERATING_SYSTEM = "iOS";
+    private static final String OPERATING_SYSTEM_VERSION = "10";
 
     public static Device aDevice(String rawImei) throws InvalidImei {
         return aDevice(rawImei, OPERATING_SYSTEM_VERSION);
@@ -50,11 +50,19 @@ public class DeviceFixtures {
         return String.format("{\"operatingSystemVersion\":\"%s\"}", operatingSystemVersion);
     }
 
+    public static String aExistingDeviceResponseJson() {
+        return aResponseJson("EXISTING_DEVICE", "The device is registered");
+    }
+
     public static String aNonExistingDeviceResponseJson() {
-        return "{\"error\": \"NON_EXISTING_DEVICE\", \"reason\": \"The device is not registered\"}";
+        return aResponseJson("NON_EXISTING_DEVICE", "The device is not registered");
     }
 
     public static String anInvalidImeiResponseJson() {
-        return "{\"error\": \"INVALID_IMEI\", \"reason\": \"The device imei is invalid\"}";
+        return aResponseJson("INVALID_IMEI", "The device imei is invalid");
+    }
+
+    private static String aResponseJson(String error, String reason) {
+        return String.format("{\"error\": \"%s\", \"reason\": \"%s\"}", error, reason);
     }
 }

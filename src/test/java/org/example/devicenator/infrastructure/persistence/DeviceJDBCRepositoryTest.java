@@ -1,11 +1,6 @@
 package org.example.devicenator.infrastructure.persistence;
 
-import org.example.devicenator.domain.device.Device;
-import org.example.devicenator.domain.device.Imei;
-import org.example.devicenator.domain.device.InvalidImei;
-import org.example.devicenator.domain.device.DeviceRepository;
-import org.example.devicenator.domain.device.DeviceNotFound;
-import org.example.devicenator.domain.device.DeviceAlreadyExists;
+import org.example.devicenator.domain.device.*;
 import org.flywaydb.core.Flyway;
 import org.junit.After;
 import org.junit.Before;
@@ -21,10 +16,10 @@ import static org.junit.Assert.assertThat;
 
 public class DeviceJDBCRepositoryTest {
 
-    public static final String RAW_IMEI = "990000862471853";
-    public static final String UNKNOWN_RAW_IMEI = "990000862471853";
-    public static final String OPERATING_SYSTEM_VERSION_10 = "10";
-    public static final String OPERATING_SYSTEM_VERSION_11 = "11";
+    private static final String RAW_IMEI = "990000862471853";
+    private static final String UNKNOWN_RAW_IMEI = "990000862471853";
+    private static final String OPERATING_SYSTEM_VERSION_10 = "10";
+    private static final String OPERATING_SYSTEM_VERSION_11 = "11";
 
     private DeviceRepository deviceRepository;
     private Flyway flyway;
@@ -53,7 +48,7 @@ public class DeviceJDBCRepositoryTest {
     }
 
     @Test
-    public void savesADevice() throws DeviceAlreadyExists, InvalidImei {
+    public void savesADevice() throws DeviceException {
         deviceRepository.save(aDevice(RAW_IMEI));
 
         Integer deviceCount = jdbcTemplate.queryForObject(
@@ -65,7 +60,7 @@ public class DeviceJDBCRepositoryTest {
     }
 
     @Test(expected = DeviceAlreadyExists.class)
-    public void throwsExceptionWhenSavingAnExistingDevice() throws DeviceAlreadyExists, InvalidImei {
+    public void throwsExceptionWhenSavingAnExistingDevice() throws DeviceException {
         Device device = aDevice(RAW_IMEI);
         deviceRepository.save(device);
 
@@ -73,7 +68,7 @@ public class DeviceJDBCRepositoryTest {
     }
 
     @Test
-    public void retrievesADevice() throws Exception {
+    public void retrievesADevice() throws DeviceException {
         Device device = aDevice(RAW_IMEI);
 
         deviceRepository.save(device);
@@ -83,12 +78,12 @@ public class DeviceJDBCRepositoryTest {
     }
 
     @Test(expected = DeviceNotFound.class)
-    public void throwsExceptionWhenRetrievingANonExistingDevice() throws DeviceNotFound, InvalidImei {
+    public void throwsExceptionWhenRetrievingANonExistingDevice() throws DeviceException {
         deviceRepository.getBy(Imei.create(UNKNOWN_RAW_IMEI));
     }
 
     @Test
-    public void updatesADevice() throws Exception {
+    public void updatesADevice() throws DeviceException {
         deviceRepository.save(aDevice(RAW_IMEI, OPERATING_SYSTEM_VERSION_10));
 
         deviceRepository.update(aDevice(RAW_IMEI, OPERATING_SYSTEM_VERSION_11));
@@ -102,7 +97,7 @@ public class DeviceJDBCRepositoryTest {
     }
 
     @Test
-    public void deletesADevice() throws DeviceAlreadyExists, InvalidImei {
+    public void deletesADevice() throws DeviceException {
         deviceRepository.save(aDevice(RAW_IMEI));
 
         deviceRepository.delete(Imei.create(RAW_IMEI));

@@ -1,4 +1,4 @@
-package org.example.devicenator.infrastructure.http;
+package org.example.devicenator.infrastructure.http.device;
 
 import org.example.devicenator.application.deletedevice.DeleteDevice;
 import org.example.devicenator.domain.device.InvalidImei;

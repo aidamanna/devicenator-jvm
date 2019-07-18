@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 
 public class DeleteDeviceTest {
 
-    public static final String RAW_IMEI = "990000862471853";
+    private static final String RAW_IMEI = "990000862471853";
 
     private DeviceJDBCRepository deviceRepository;
     private DeleteDevice deleteDevice;

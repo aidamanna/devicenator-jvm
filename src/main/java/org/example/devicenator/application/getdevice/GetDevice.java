@@ -1,10 +1,6 @@
 package org.example.devicenator.application.getdevice;
 
-import org.example.devicenator.domain.device.Device;
-import org.example.devicenator.domain.device.Imei;
-import org.example.devicenator.domain.device.InvalidImei;
-import org.example.devicenator.domain.device.DeviceNotFound;
-import org.example.devicenator.domain.device.DeviceRepository;
+import org.example.devicenator.domain.device.*;
 
 public class GetDevice {
 
@@ -14,7 +10,7 @@ public class GetDevice {
         this.deviceRepository = deviceRepository;
     }
 
-    public Device execute(String rawImei) throws DeviceNotFound, InvalidImei {
+    public Device execute(String rawImei) throws DeviceException {
         Imei imei = Imei.create(rawImei);
         return deviceRepository.getBy(imei);
     }

@@ -1,9 +1,6 @@
 package org.example.devicenator.application.getdevice;
 
-import org.example.devicenator.domain.device.Device;
-import org.example.devicenator.domain.device.Imei;
-import org.example.devicenator.domain.device.InvalidImei;
-import org.example.devicenator.domain.device.DeviceNotFound;
+import org.example.devicenator.domain.device.*;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +14,7 @@ import static org.mockito.Mockito.when;
 
 public class GetDeviceTest {
 
-    public static final String RAW_IMEI = "990000862471853";
+    private static final String RAW_IMEI = "990000862471853";
 
     private DeviceJDBCRepository deviceRepository;
     private GetDevice getDevice;
@@ -29,7 +26,7 @@ public class GetDeviceTest {
     }
 
     @Test
-    public void retrievesAnExistingDevice() throws DeviceNotFound, InvalidImei {
+    public void retrievesAnExistingDevice() throws DeviceException {
         Device expectedDevice = aDevice(RAW_IMEI);
         when(deviceRepository.getBy(Imei.create(RAW_IMEI))).thenReturn(expectedDevice);
 

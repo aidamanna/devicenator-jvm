@@ -24,7 +24,7 @@ public class Imei {
 
     private static void validate(String rawImei) throws InvalidImei {
         if (rawImei == null || rawImei.length() != IMEI_LENGTH) {
-            throw new InvalidImei();
+            throw new InvalidImei("The device imei does not have 15 digits");
         }
 
         long imei = Long.parseLong(rawImei);
@@ -42,7 +42,7 @@ public class Imei {
         }
 
         if (!isSumOfDigitsDivisibleByTen(sum)) {
-            throw new InvalidImei();
+            throw new InvalidImei("The device imei is invalid");
         }
     }
 
