@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.example.devicenator.DeviceFixtures.*;
+import static org.example.devicenator.fixtures.DeviceFixtures.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -73,7 +73,7 @@ public class CreateDeviceControllerTest {
     }
 
     @Test
-    public void throwsBadRequestWhenNotSpecifyingDeviceValues() throws Exception {
+    public void returnsBadRequestWhenNotSpecifyingDeviceValues() throws Exception {
         mockMvc.perform(post("/devices")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(EMPTY_REQUEST_BODY))

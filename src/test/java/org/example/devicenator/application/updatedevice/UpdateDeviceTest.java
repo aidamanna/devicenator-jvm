@@ -5,7 +5,7 @@ import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.example.devicenator.DeviceFixtures.*;
+import static org.example.devicenator.fixtures.DeviceFixtures.*;
 import static org.mockito.Mockito.*;
 
 public class UpdateDeviceTest {

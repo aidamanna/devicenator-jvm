@@ -1,6 +1,6 @@
 package org.example.devicenator.infrastructure.http.device;
 
-import static org.example.devicenator.DeviceFixtures.anInvalidImeiResponseJson;
+import static org.example.devicenator.fixtures.DeviceFixtures.anInvalidImeiResponseJson;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

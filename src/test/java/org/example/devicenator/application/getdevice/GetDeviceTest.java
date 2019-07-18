@@ -5,7 +5,7 @@ import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.example.devicenator.DeviceFixtures.aDevice;
+import static org.example.devicenator.fixtures.DeviceFixtures.aDevice;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;

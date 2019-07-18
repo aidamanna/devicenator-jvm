@@ -2,14 +2,12 @@ package org.example.devicenator.application.createdevice;
 
 import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.DeviceException;
-import org.example.devicenator.domain.device.InvalidImei;
-import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.example.devicenator.DeviceFixtures.aCreateRequestDevice;
-import static org.example.devicenator.DeviceFixtures.aDevice;
+import static org.example.devicenator.fixtures.DeviceFixtures.aCreateRequestDevice;
+import static org.example.devicenator.fixtures.DeviceFixtures.aDevice;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 

@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
-import static org.example.devicenator.DeviceFixtures.*;
+import static org.example.devicenator.fixtures.DeviceFixtures.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 

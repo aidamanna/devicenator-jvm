@@ -1,6 +1,7 @@
 package org.example.devicenator.infrastructure.configuration;
 
 import org.example.devicenator.application.createdevice.CreateDevice;
+import org.example.devicenator.application.createuser.CreateUser;
 import org.example.devicenator.application.deletedevice.DeleteDevice;
 import org.example.devicenator.application.getdevice.GetDevice;
 import org.example.devicenator.application.updatedevice.UpdateDevice;
@@ -40,5 +41,10 @@ public class ApplicationConfiguration {
     @Bean
     public DeviceJDBCRepository deviceJDBCRepository(JdbcTemplate jdbcTemplate) {
         return new DeviceJDBCRepository(jdbcTemplate);
+    }
+
+    @Bean
+    public CreateUser createUser() {
+        return new CreateUser();
     }
 }

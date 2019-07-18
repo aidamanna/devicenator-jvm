@@ -1,4 +1,4 @@
-package org.example.devicenator;
+package org.example.devicenator.fixtures;
 
 import org.example.devicenator.application.createdevice.CreateRequestDevice;
 import org.example.devicenator.application.updatedevice.UpdateRequestDevice;
