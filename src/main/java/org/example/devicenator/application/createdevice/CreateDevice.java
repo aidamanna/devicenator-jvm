@@ -3,22 +3,26 @@ package org.example.devicenator.application.createdevice;
 import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceRepository;
+import org.example.devicenator.domain.device.Imei;
+import org.example.devicenator.domain.device.InvalidImei;
 
 public class CreateDevice {
-    private DeviceRepository deviceRepository;
 
-    public CreateDevice(DeviceRepository deviceRepository) {
-        this.deviceRepository = deviceRepository;
-    }
+  private DeviceRepository deviceRepository;
 
-    public void execute(CreateRequestDevice createRequestDevice) throws DeviceAlreadyExists {
-        Device device = new Device(
-                createRequestDevice.getImei(),
-                createRequestDevice.getVendor(),
-                createRequestDevice.getModel(),
-                createRequestDevice.getOperatingSystem(),
-                createRequestDevice.getOperatingSystemVersion());
+  public CreateDevice(DeviceRepository deviceRepository) {
+    this.deviceRepository = deviceRepository;
+  }
 
-        deviceRepository.save(device);
-    }
+  public void execute(CreateRequestDevice createRequestDevice)
+      throws DeviceAlreadyExists, InvalidImei {
+    Device device = new Device(
+        Imei.create(createRequestDevice.getRawImei()),
+        createRequestDevice.getVendor(),
+        createRequestDevice.getModel(),
+        createRequestDevice.getOperatingSystem(),
+        createRequestDevice.getOperatingSystemVersion());
+
+    deviceRepository.save(device);
+  }
 }

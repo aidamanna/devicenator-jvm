@@ -2,14 +2,14 @@ package org.example.devicenator.infrastructure.http;
 
 import org.example.devicenator.application.getdevice.GetDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.example.devicenator.DeviceFixtures.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,8 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class GetDeviceControllerTest {
 
-    public static final String IMEI = "990000862471854";
-    public static final String UNKNOWN_IMEI = "99000086247185";
+    public static final String RAW_IMEI = "990000862471853";
+    public static final String UNKNOWN_RAW_IMEI = "990000862471853";
+    public static final String INVALID_RAW_IMEI = "990000862471855";
 
     private GetDevice getDevice;
     private GetDeviceController getDeviceController;
@@ -35,20 +36,29 @@ public class GetDeviceControllerTest {
 
     @Test
     public void retrievesAnExistingDevice() throws Exception {
-        when(getDevice.execute(IMEI)).thenReturn(aDevice(IMEI));
+        when(getDevice.execute(RAW_IMEI)).thenReturn(aDevice(RAW_IMEI));
 
-        mockMvc.perform(get("/devices/" + IMEI))
+        mockMvc.perform(get("/devices/" + RAW_IMEI))
                                 .andExpect(status().isOk())
-                                .andExpect(content().string(aCreateDeviceJson(IMEI)));
+                                .andExpect(content().string(aCreateDeviceJson(RAW_IMEI)));
 
     }
 
     @Test
     public void returnsNotFoundWhenRetrievingANonExistingDevice() throws Exception {
-        when(getDevice.execute(UNKNOWN_IMEI)).thenThrow(DeviceNotFound.class);
+        when(getDevice.execute(UNKNOWN_RAW_IMEI)).thenThrow(DeviceNotFound.class);
 
-        mockMvc.perform(get("/devices/" + UNKNOWN_IMEI))
+        mockMvc.perform(get("/devices/" + UNKNOWN_RAW_IMEI))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(aNonExistingDeviceResponseJson()));
+    }
+
+    @Test
+    public void returnsBadRequestWhenImeiIsInvalid() throws Exception {
+        when(getDevice.execute(INVALID_RAW_IMEI)).thenThrow(InvalidImei.class);
+
+        mockMvc.perform(get("/devices/" + INVALID_RAW_IMEI))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(anInvalidImeiResponseJson()));
     }
 }

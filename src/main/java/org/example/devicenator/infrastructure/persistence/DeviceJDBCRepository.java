@@ -1,6 +1,8 @@
 package org.example.devicenator.infrastructure.persistence;
 
 import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.Imei;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
@@ -27,26 +29,26 @@ public class DeviceJDBCRepository implements DeviceRepository {
 
         try {
             jdbcTemplate.update(
-                    saveDeviceQuery,
-                    device.getImei(),
-                    device.getVendor(),
-                    device.getModel(),
-                    device.getOperatingSystem(),
-                    device.getOperatingSystemVersion());
+                saveDeviceQuery,
+                device.getImei(),
+                device.getVendor(),
+                device.getModel(),
+                device.getOperatingSystem(),
+                device.getOperatingSystemVersion());
         } catch (DuplicateKeyException e) {
             throw new DeviceAlreadyExists();
         }
     }
 
     @Override
-    public Device getBy(String imei) throws DeviceNotFound {
+    public Device getBy(Imei imei) throws DeviceNotFound {
         getDeviceByIdQuery = "SELECT * FROM devices WHERE imei = ?";
 
         try {
             return jdbcTemplate.queryForObject(
-                    getDeviceByIdQuery,
-                    new Object[]{imei},
-                    new DeviceRowMapper());
+                getDeviceByIdQuery,
+                new Object[]{imei.getImei()},
+                new DeviceRowMapper());
         } catch (EmptyResultDataAccessException e) {
             throw new DeviceNotFound();
         }
@@ -56,8 +58,8 @@ public class DeviceJDBCRepository implements DeviceRepository {
     public void update(Device device) {
         String updateDeviceQuery =
                 "UPDATE devices " +
-                "SET vendor = ?, model = ?, operatingSystem = ?, operatingSystemVersion = ? " +
-                "WHERE imei = ?";
+                        "SET vendor = ?, model = ?, operatingSystem = ?, operatingSystemVersion = ? " +
+                        "WHERE imei = ?";
 
         jdbcTemplate.update(
                 updateDeviceQuery,
@@ -68,24 +70,30 @@ public class DeviceJDBCRepository implements DeviceRepository {
                 device.getImei());
     }
 
-    public void delete(String imei) {
+    @Override
+    public void delete(Imei imei) {
         String deleteDeviceQuery = "DELETE devices WHERE imei = ?";
 
         jdbcTemplate.update(
                 deleteDeviceQuery,
-                imei);
+                imei.getImei());
     }
+
 
     public class DeviceRowMapper implements RowMapper<Device> {
 
         @Override
         public Device mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Device(
-                    rs.getString("imei"),
+            try {
+                return new Device(
+                    Imei.create(rs.getString("imei")),
                     rs.getString("vendor"),
                     rs.getString("model"),
                     rs.getString("operatingSystem"),
                     rs.getString("operatingSystemVersion"));
+            } catch (InvalidImei e) {
+                throw new SQLException();
+            }
         }
     }
 }

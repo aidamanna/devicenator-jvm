@@ -2,6 +2,7 @@ package org.example.devicenator.infrastructure.http;
 
 import org.example.devicenator.application.updatedevice.UpdateDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -17,8 +18,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UpdateDeviceControllerTest {
 
-    public static final String IMEI = "990000862471854";
-    public static final String UNKNOWN_IMEI = "990000862471855";
+    public static final String RAW_IMEI = "990000862471853";
+    public static final String UNKNOWN_RAW_IMEI = "990000862471853";
+    public static final String INVALID_RAW_IMEI = "990000862471855";
     public static final String OPERATING_SYSTEM_VERSION = "11";
     private static final String EMPTY_REQUEST_BODY = "{}";
 
@@ -38,20 +40,20 @@ public class UpdateDeviceControllerTest {
 
     @Test
     public void updatesADevice() throws Exception {
-        mockMvc.perform(put("/devices/" + IMEI)
+        mockMvc.perform(put("/devices/" + RAW_IMEI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(anUpdateDeviceJson(OPERATING_SYSTEM_VERSION)))
                 .andExpect(status().isOk());
 
-        verify(updateDevice).execute(IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
+        verify(updateDevice).execute(RAW_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
     }
 
     @Test
     public void throwsNotFoundWhenTheDeviceDoesNotExist() throws Exception {
         doThrow(DeviceNotFound.class).when(updateDevice)
-                .execute(UNKNOWN_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
+                .execute(UNKNOWN_RAW_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
 
-        mockMvc.perform(put("/devices/" + UNKNOWN_IMEI)
+        mockMvc.perform(put("/devices/" + UNKNOWN_RAW_IMEI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(anUpdateDeviceJson(OPERATING_SYSTEM_VERSION)))
                 .andExpect(status().isNotFound())
@@ -59,12 +61,24 @@ public class UpdateDeviceControllerTest {
     }
 
     @Test
+    public void returnsBadRequestWhenImeiIsInvalid() throws Exception {
+        doThrow(InvalidImei.class).when(updateDevice)
+                .execute(INVALID_RAW_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
+
+        mockMvc.perform(put("/devices/" + INVALID_RAW_IMEI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(anUpdateDeviceJson(OPERATING_SYSTEM_VERSION)))
+                .andExpect(status().isBadRequest() )
+                .andExpect(content().json(anInvalidImeiResponseJson()));
+    }
+
+    @Test
     public void throwsBadRequestWhenNotSpecifyingDeviceValues() throws Exception {
-        mockMvc.perform(put("/devices/" + IMEI)
+        mockMvc.perform(put("/devices/" + RAW_IMEI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(EMPTY_REQUEST_BODY))
                 .andExpect(status().isBadRequest());
 
-        verify(updateDevice, never()).execute(eq(IMEI), any());
+        verify(updateDevice, never()).execute(eq(RAW_IMEI), any());
     }
 }

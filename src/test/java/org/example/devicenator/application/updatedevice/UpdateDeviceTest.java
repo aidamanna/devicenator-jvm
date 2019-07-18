@@ -1,8 +1,6 @@
 package org.example.devicenator.application.updatedevice;
 
-import org.example.devicenator.DeviceFixtures;
-import org.example.devicenator.domain.device.Device;
-import org.example.devicenator.domain.device.DeviceNotFound;
+import org.example.devicenator.domain.device.*;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,8 +10,8 @@ import static org.mockito.Mockito.*;
 
 public class UpdateDeviceTest {
 
-    public static final String IMEI = "990000862471854";
-    public static final String UNKNOWN_IMEI = "99000086247185";
+    public static final String RAW_IMEI = "990000862471853";
+    public static final String UNKNOWN_RAW_IMEI = "990000862471853";
     public static final String OPERATING_SYSTEM_VERSION = "11";
 
     DeviceJDBCRepository deviceRepository;
@@ -26,22 +24,22 @@ public class UpdateDeviceTest {
     }
 
     @Test
-    public void updatesADevice() throws DeviceNotFound {
-        Device device = aDevice(IMEI, OPERATING_SYSTEM_VERSION);
-        when(deviceRepository.getBy(IMEI)).thenReturn(device);
+    public void updatesADevice() throws DeviceNotFound, InvalidImei {
+        Device device = aDevice(RAW_IMEI, OPERATING_SYSTEM_VERSION);
+        when(deviceRepository.getBy(Imei.create(RAW_IMEI))).thenReturn(device);
 
-        updateDevice.execute(IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
+        updateDevice.execute(RAW_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
 
         verify(deviceRepository).update(device);
     }
 
     @Test(expected = DeviceNotFound.class)
-    public void throwsAnExceptionWhenUpdatingANonExistingDevice() throws DeviceNotFound {
-        when(deviceRepository.getBy(UNKNOWN_IMEI)).thenThrow(DeviceNotFound.class);
+    public void throwsAnExceptionWhenUpdatingANonExistingDevice() throws DeviceNotFound, InvalidImei {
+        when(deviceRepository.getBy(Imei.create(UNKNOWN_RAW_IMEI))).thenThrow(DeviceNotFound.class);
 
-        updateDevice.execute(UNKNOWN_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
+        updateDevice.execute(UNKNOWN_RAW_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
 
         verify(deviceRepository, times(0))
-                .update(DeviceFixtures.aDevice(UNKNOWN_IMEI, OPERATING_SYSTEM_VERSION));
+                .update(aDevice(UNKNOWN_RAW_IMEI, OPERATING_SYSTEM_VERSION));
     }
 }

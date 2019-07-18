@@ -1,11 +1,13 @@
 package org.example.devicenator.infrastructure.http;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.example.devicenator.DeviceFixtures.anInvalidImeiResponseJson;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.example.devicenator.application.deletedevice.DeleteDevice;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -13,7 +15,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 public class DeleteDeviceControllerTest {
 
-    public static final String IMEI = "990000862471854";
+    public static final String RAW_IMEI = "990000862471853";
+    public static final String INVALID_RAW_IMEI = "990000862471855";
 
     private DeleteDevice deleteDevice;
     private MockMvc mockMvc;
@@ -30,9 +33,18 @@ public class DeleteDeviceControllerTest {
 
     @Test
     public void deletesADevice() throws Exception {
-        mockMvc.perform(delete("/devices/" + IMEI))
+        mockMvc.perform(delete("/devices/" + RAW_IMEI))
                 .andExpect(status().isOk());
 
-        verify(deleteDevice).execute(IMEI);
+        verify(deleteDevice).execute(RAW_IMEI);
+    }
+
+    @Test
+    public void returnsBadRequestWhenImeiIsInvalid() throws Exception {
+        doThrow(InvalidImei.class).when(deleteDevice).execute(INVALID_RAW_IMEI);
+
+        mockMvc.perform(delete("/devices/" + INVALID_RAW_IMEI))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(anInvalidImeiResponseJson()));
     }
 }

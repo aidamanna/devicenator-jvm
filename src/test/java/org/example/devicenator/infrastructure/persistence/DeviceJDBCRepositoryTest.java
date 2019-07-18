@@ -1,6 +1,8 @@
 package org.example.devicenator.infrastructure.persistence;
 
 import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.Imei;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.device.DeviceNotFound;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
@@ -19,8 +21,8 @@ import static org.junit.Assert.assertThat;
 
 public class DeviceJDBCRepositoryTest {
 
-    public static final String IMEI = "990000862471854";
-    public static final String UNKNOWN_IMEI = "99000086247185";
+    public static final String RAW_IMEI = "990000862471853";
+    public static final String UNKNOWN_RAW_IMEI = "990000862471853";
     public static final String OPERATING_SYSTEM_VERSION_10 = "10";
     public static final String OPERATING_SYSTEM_VERSION_11 = "11";
 
@@ -51,20 +53,20 @@ public class DeviceJDBCRepositoryTest {
     }
 
     @Test
-    public void savesADevice() throws DeviceAlreadyExists {
-        deviceRepository.save(aDevice(IMEI));
+    public void savesADevice() throws DeviceAlreadyExists, InvalidImei {
+        deviceRepository.save(aDevice(RAW_IMEI));
 
         Integer deviceCount = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM devices WHERE imei = ?",
-                new Object[]{IMEI},
-                Integer.class);
+            "SELECT COUNT(*) FROM devices WHERE imei = ?",
+            new Object[]{RAW_IMEI},
+            Integer.class);
 
         assertThat(deviceCount, is(1));
     }
 
     @Test(expected = DeviceAlreadyExists.class)
-    public void throwsExceptionWhenSavingAnExistingDevice() throws DeviceAlreadyExists {
-        Device device = aDevice(IMEI);
+    public void throwsExceptionWhenSavingAnExistingDevice() throws DeviceAlreadyExists, InvalidImei {
+        Device device = aDevice(RAW_IMEI);
         deviceRepository.save(device);
 
         deviceRepository.save(device);
@@ -72,56 +74,55 @@ public class DeviceJDBCRepositoryTest {
 
     @Test
     public void retrievesADevice() throws Exception {
-        Device device = aDevice(IMEI);
+        Device device = aDevice(RAW_IMEI);
 
         deviceRepository.save(device);
 
-        Device savedDevice = deviceRepository.getBy(IMEI);
+        Device savedDevice = deviceRepository.getBy(Imei.create(RAW_IMEI));
         assertThat(savedDevice, is(device));
     }
 
-
     @Test(expected = DeviceNotFound.class)
-    public void throwsExceptionWhenRetrievingANonExistingDevice() throws DeviceNotFound {
-        deviceRepository.getBy(UNKNOWN_IMEI);
+    public void throwsExceptionWhenRetrievingANonExistingDevice() throws DeviceNotFound, InvalidImei {
+        deviceRepository.getBy(Imei.create(UNKNOWN_RAW_IMEI));
     }
 
     @Test
     public void updatesADevice() throws Exception {
-        deviceRepository.save(aDevice(IMEI, OPERATING_SYSTEM_VERSION_10));
+        deviceRepository.save(aDevice(RAW_IMEI, OPERATING_SYSTEM_VERSION_10));
 
-        deviceRepository.update(aDevice(IMEI, OPERATING_SYSTEM_VERSION_11));
+        deviceRepository.update(aDevice(RAW_IMEI, OPERATING_SYSTEM_VERSION_11));
 
         Integer deviceCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM devices WHERE imei = ? AND operatingSystemVersion = ?",
-                new Object[]{IMEI, OPERATING_SYSTEM_VERSION_11},
+                new Object[]{RAW_IMEI, OPERATING_SYSTEM_VERSION_11},
                 Integer.class);
 
         assertThat(deviceCount, is(1));
     }
 
     @Test
-    public void deletesADevice() throws DeviceAlreadyExists {
-        deviceRepository.save(aDevice(IMEI));
+    public void deletesADevice() throws DeviceAlreadyExists, InvalidImei {
+        deviceRepository.save(aDevice(RAW_IMEI));
 
-        deviceRepository.delete(IMEI);
+        deviceRepository.delete(Imei.create(RAW_IMEI));
 
         Integer deviceCount = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM devices WHERE imei = ?",
-                new Object[]{IMEI},
+                new Object[]{RAW_IMEI},
                 Integer.class);
 
         assertThat(deviceCount, is(0));
     }
 
     @Test
-    public void doesNotThrowAnExceptionWhenDeletingNonExistingDevices() {
-        deviceRepository.delete(UNKNOWN_IMEI);
+    public void doesNotThrowAnExceptionWhenDeletingNonExistingDevice() throws InvalidImei {
+        deviceRepository.delete(Imei.create(UNKNOWN_RAW_IMEI));
 
         Integer deviceCount = jdbcTemplate.queryForObject(
-            "SELECT COUNT(*) FROM devices WHERE imei = ?",
-            new Object[]{IMEI},
-            Integer.class);
+                "SELECT COUNT(*) FROM devices WHERE imei = ?",
+                new Object[]{RAW_IMEI},
+                Integer.class);
 
         assertThat(deviceCount, is(0));
     }

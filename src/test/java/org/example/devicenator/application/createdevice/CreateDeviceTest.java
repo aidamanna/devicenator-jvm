@@ -1,20 +1,20 @@
 package org.example.devicenator.application.createdevice;
 
-import org.example.devicenator.DeviceFixtures;
 import org.example.devicenator.domain.device.Device;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.example.devicenator.domain.device.DeviceAlreadyExists;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.example.devicenator.DeviceFixtures.aCreateRequestDevice;
-import static org.mockito.ArgumentMatchers.any;
+import static org.example.devicenator.DeviceFixtures.aDevice;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class CreateDeviceTest {
 
-    public static final String IMEI = "990000862471854";
+    public static final String RAW_IMEI = "990000862471853";
 
     private DeviceJDBCRepository deviceRepository;
     private CreateDevice createDevice;
@@ -26,9 +26,10 @@ public class CreateDeviceTest {
     }
 
     @Test
-    public void createsADevice() throws DeviceAlreadyExists {
-        createDevice.execute(aCreateRequestDevice(IMEI));
+    public void createsADevice() throws DeviceAlreadyExists, InvalidImei {
+        createDevice.execute(aCreateRequestDevice(RAW_IMEI));
 
-        verify(deviceRepository).save(any(Device.class));
+        Device device = aDevice(RAW_IMEI);
+        verify(deviceRepository).save(device);
     }
 }

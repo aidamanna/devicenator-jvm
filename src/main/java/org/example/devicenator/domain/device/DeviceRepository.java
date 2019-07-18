@@ -4,9 +4,9 @@ public interface DeviceRepository {
 
     void save(Device device) throws DeviceAlreadyExists;
 
-    Device getBy(String imei) throws DeviceNotFound;
+    Device getBy(Imei imei) throws DeviceNotFound;
 
     void update(Device device);
 
-    void delete(String imei);
+    void delete(Imei imei);
 }

@@ -1,8 +1,6 @@
 package org.example.devicenator.application.updatedevice;
 
-import org.example.devicenator.domain.device.Device;
-import org.example.devicenator.domain.device.DeviceNotFound;
-import org.example.devicenator.domain.device.DeviceRepository;
+import org.example.devicenator.domain.device.*;
 
 
 public class UpdateDevice {
@@ -13,7 +11,8 @@ public class UpdateDevice {
         this.deviceRepository = deviceRepository;
     }
 
-    public void execute(String imei, UpdateRequestDevice updateRequestDevice) throws DeviceNotFound {
+    public void execute(String rawImei, UpdateRequestDevice updateRequestDevice) throws DeviceNotFound, InvalidImei {
+        Imei imei = Imei.create(rawImei);
         Device device = deviceRepository.getBy(imei);
 
         Device updatedDevice = device.update(updateRequestDevice.getOperatingSystemVersion());
