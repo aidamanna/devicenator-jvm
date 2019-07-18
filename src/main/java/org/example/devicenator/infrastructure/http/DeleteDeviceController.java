@@ -19,9 +19,9 @@ public class DeleteDeviceController {
         this.deleteDevice = deleteDevice;
     }
 
-    @DeleteMapping("/devices/{imei}")
+    @DeleteMapping("/devices/{rawImei}")
     @ResponseStatus(HttpStatus.OK)
-    public void execute(@PathVariable String imei) throws InvalidImei {
-        deleteDevice.execute(imei);
+    public void execute(@PathVariable String rawImei) throws InvalidImei {
+        deleteDevice.execute(rawImei);
     }
 }

@@ -21,10 +21,10 @@ public class UpdateDeviceController {
         this.updateDevice = updateDevice;
     }
 
-    @PutMapping("/devices/{imei}")
+    @PutMapping("/devices/{rawImei}")
     @ResponseStatus(HttpStatus.OK)
-    public void execute(@PathVariable String imei, @Valid @RequestBody UpdateRequestDevice device)
+    public void execute(@PathVariable String rawImei, @Valid @RequestBody UpdateRequestDevice device)
             throws DeviceNotFound, InvalidImei {
-        updateDevice.execute(imei, device);
+        updateDevice.execute(rawImei, device);
     }
 }

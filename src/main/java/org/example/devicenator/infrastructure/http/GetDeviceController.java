@@ -18,10 +18,10 @@ public class GetDeviceController {
         this.getDevice = getDevice;
     }
 
-    @GetMapping("/devices/{imei}")
+    @GetMapping("/devices/{rawImei}")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    Device execute(@PathVariable String imei) throws DeviceNotFound, InvalidImei {
-        return getDevice.execute(imei);
+    Device execute(@PathVariable String rawImei) throws DeviceNotFound, InvalidImei {
+        return getDevice.execute(rawImei);
     }
 }

@@ -11,8 +11,9 @@ public class UpdateDevice {
         this.deviceRepository = deviceRepository;
     }
 
-    public void execute(String imei, UpdateRequestDevice updateRequestDevice) throws DeviceNotFound, InvalidImei {
-        Device device = deviceRepository.getBy(Imei.create(imei));
+    public void execute(String rawImei, UpdateRequestDevice updateRequestDevice) throws DeviceNotFound, InvalidImei {
+        Imei imei = Imei.create(rawImei);
+        Device device = deviceRepository.getBy(imei);
 
         Device updatedDevice = device.update(updateRequestDevice.getOperatingSystemVersion());
 

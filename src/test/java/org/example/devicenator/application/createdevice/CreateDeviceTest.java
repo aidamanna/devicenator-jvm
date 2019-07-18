@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 
 public class CreateDeviceTest {
 
-    public static final String IMEI = "990000862471853";
+    public static final String RAW_IMEI = "990000862471853";
 
     private DeviceJDBCRepository deviceRepository;
     private CreateDevice createDevice;
@@ -27,9 +27,9 @@ public class CreateDeviceTest {
 
     @Test
     public void createsADevice() throws DeviceAlreadyExists, InvalidImei {
-        createDevice.execute(aCreateRequestDevice(IMEI));
+        createDevice.execute(aCreateRequestDevice(RAW_IMEI));
 
-        Device device = aDevice(IMEI);
+        Device device = aDevice(RAW_IMEI);
         verify(deviceRepository).save(device);
     }
 }

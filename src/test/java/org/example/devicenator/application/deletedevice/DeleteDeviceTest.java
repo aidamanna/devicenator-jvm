@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 
 public class DeleteDeviceTest {
 
-    public static final String IMEI = "990000862471853";
+    public static final String RAW_IMEI = "990000862471853";
 
     private DeviceJDBCRepository deviceRepository;
     private DeleteDevice deleteDevice;
@@ -23,8 +23,8 @@ public class DeleteDeviceTest {
 
     @Test
     public void deletesADevice() throws InvalidImei {
-        deleteDevice.execute(IMEI);
+        deleteDevice.execute(RAW_IMEI);
 
-        verify(deviceRepository).delete(Imei.create(IMEI));
+        verify(deviceRepository).delete(Imei.create(RAW_IMEI));
     }
 }

@@ -17,7 +17,7 @@ public class CreateDevice {
   public void execute(CreateRequestDevice createRequestDevice)
       throws DeviceAlreadyExists, InvalidImei {
     Device device = new Device(
-        Imei.create(createRequestDevice.getImei()),
+        Imei.create(createRequestDevice.getRawImei()),
         createRequestDevice.getVendor(),
         createRequestDevice.getModel(),
         createRequestDevice.getOperatingSystem(),

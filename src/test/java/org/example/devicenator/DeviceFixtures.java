@@ -13,20 +13,20 @@ public class DeviceFixtures {
     public static final String OPERATING_SYSTEM = "iOS";
     public static final String OPERATING_SYSTEM_VERSION = "10";
 
-    public static Device aDevice(String imei) throws InvalidImei {
-        return aDevice(imei, OPERATING_SYSTEM_VERSION);
+    public static Device aDevice(String rawImei) throws InvalidImei {
+        return aDevice(rawImei, OPERATING_SYSTEM_VERSION);
     }
 
-    public static Device aDevice(String imei, String operatingSystemVersion) throws InvalidImei {
-        return new Device(Imei.create(imei),
+    public static Device aDevice(String rawImei, String operatingSystemVersion) throws InvalidImei {
+        return new Device(Imei.create(rawImei),
                 VENDOR,
                 MODEL,
                 OPERATING_SYSTEM,
                 operatingSystemVersion);
     }
 
-    public static CreateRequestDevice aCreateRequestDevice(String imei) {
-        return new CreateRequestDevice(imei,
+    public static CreateRequestDevice aCreateRequestDevice(String rawImei) {
+        return new CreateRequestDevice(rawImei,
                 VENDOR,
                 MODEL,
                 OPERATING_SYSTEM,
@@ -37,13 +37,13 @@ public class DeviceFixtures {
         return new UpdateRequestDevice(operatingSystemVersion);
     }
 
-    public static String aCreateDeviceJson(String imei) {
+    public static String aCreateDeviceJson(String rawImei) {
         return String.format("{\"imei\":\"%s\"," +
                         "\"vendor\":\"%s\"," +
                         "\"model\":\"%s\"," +
                         "\"operatingSystem\":\"%s\"," +
                         "\"operatingSystemVersion\":\"%s\"}",
-                imei, VENDOR, MODEL, OPERATING_SYSTEM, OPERATING_SYSTEM_VERSION);
+                rawImei, VENDOR, MODEL, OPERATING_SYSTEM, OPERATING_SYSTEM_VERSION);
     }
 
     public static String anUpdateDeviceJson(String operatingSystemVersion) {

@@ -1,5 +1,6 @@
 package org.example.devicenator.application.createdevice;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -12,8 +13,9 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class CreateRequestDevice {
 
+    @JsonProperty("imei")
     @NotBlank
-    private String imei;
+    private String rawImei;
 
     @NotBlank
     private String vendor;
