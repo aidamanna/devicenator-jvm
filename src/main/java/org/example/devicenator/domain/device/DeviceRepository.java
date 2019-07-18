@@ -8,5 +8,5 @@ public interface DeviceRepository {
 
     void update(Device device);
 
-    void delete(String imei);
+    void delete(Imei imei);
 }

@@ -70,13 +70,15 @@ public class DeviceJDBCRepository implements DeviceRepository {
                 device.getImei());
     }
 
-    public void delete(String imei) {
+    @Override
+    public void delete(Imei imei) {
         String deleteDeviceQuery = "DELETE devices WHERE imei = ?";
 
         jdbcTemplate.update(
                 deleteDeviceQuery,
-                imei);
+                imei.getImei());
     }
+
 
     public class DeviceRowMapper implements RowMapper<Device> {
 

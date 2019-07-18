@@ -16,7 +16,6 @@ public class GetDevice {
 
     public Device execute(String rawImei) throws DeviceNotFound, InvalidImei {
         Imei imei = Imei.create(rawImei);
-
         return deviceRepository.getBy(imei);
     }
 }

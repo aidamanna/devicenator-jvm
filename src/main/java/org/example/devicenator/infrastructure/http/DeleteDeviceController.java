@@ -1,6 +1,7 @@
 package org.example.devicenator.infrastructure.http;
 
 import org.example.devicenator.application.deletedevice.DeleteDevice;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +21,7 @@ public class DeleteDeviceController {
 
     @DeleteMapping("/devices/{imei}")
     @ResponseStatus(HttpStatus.OK)
-    public void execute(@PathVariable String imei) {
+    public void execute(@PathVariable String imei) throws InvalidImei {
         deleteDevice.execute(imei);
     }
 }
