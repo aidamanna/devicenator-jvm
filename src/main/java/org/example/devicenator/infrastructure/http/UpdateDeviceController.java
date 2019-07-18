@@ -3,6 +3,7 @@ package org.example.devicenator.infrastructure.http;
 import org.example.devicenator.application.updatedevice.UpdateDevice;
 import org.example.devicenator.application.updatedevice.UpdateRequestDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class UpdateDeviceController {
     @PutMapping("/devices/{imei}")
     @ResponseStatus(HttpStatus.OK)
     public void execute(@PathVariable String imei, @Valid @RequestBody UpdateRequestDevice device)
-            throws DeviceNotFound {
+            throws DeviceNotFound, InvalidImei {
         updateDevice.execute(imei, device);
     }
 }

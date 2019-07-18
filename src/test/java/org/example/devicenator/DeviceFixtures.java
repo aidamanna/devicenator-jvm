@@ -5,7 +5,6 @@ import org.example.devicenator.application.updatedevice.UpdateRequestDevice;
 import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.Imei;
 import org.example.devicenator.domain.device.InvalidImei;
-import org.example.devicenator.domain.device.OldDevice;
 
 public class DeviceFixtures {
 
@@ -14,24 +13,16 @@ public class DeviceFixtures {
     public static final String OPERATING_SYSTEM = "iOS";
     public static final String OPERATING_SYSTEM_VERSION = "10";
 
-    public static OldDevice anOldDevice(String imei) {
-        return anOldDevice(imei, OPERATING_SYSTEM_VERSION);
-    }
-
-    public static OldDevice anOldDevice(String imei, String operatingSystemVersion) {
-        return new OldDevice(imei,
-                VENDOR,
-                MODEL,
-                OPERATING_SYSTEM,
-                operatingSystemVersion);
-    }
-
     public static Device aDevice(String imei) throws InvalidImei {
+        return aDevice(imei, OPERATING_SYSTEM_VERSION);
+    }
+
+    public static Device aDevice(String imei, String operatingSystemVersion) throws InvalidImei {
         return new Device(Imei.create(imei),
                 VENDOR,
                 MODEL,
                 OPERATING_SYSTEM,
-                OPERATING_SYSTEM_VERSION);
+                operatingSystemVersion);
     }
 
     public static CreateRequestDevice aCreateRequestDevice(String imei) {
@@ -61,5 +52,9 @@ public class DeviceFixtures {
 
     public static String aNonExistingDeviceResponseJson() {
         return "{\"error\": \"NON_EXISTING_DEVICE\", \"reason\": \"The device is not registered\"}";
+    }
+
+    public static String anInvalidImeiResponseJson() {
+        return "{\"error\": \"INVALID_IMEI\", \"reason\": \"The device imei is invalid\"}";
     }
 }

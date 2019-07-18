@@ -2,6 +2,7 @@ package org.example.devicenator.infrastructure.http;
 
 import org.example.devicenator.application.updatedevice.UpdateDevice;
 import org.example.devicenator.domain.device.DeviceNotFound;
+import org.example.devicenator.domain.device.InvalidImei;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ public class UpdateDeviceControllerTest {
 
     public static final String IMEI = "990000862471853";
     public static final String UNKNOWN_IMEI = "990000862471853";
+    public static final String INVALID_IMEI = "990000862471853";
     public static final String OPERATING_SYSTEM_VERSION = "11";
     private static final String EMPTY_REQUEST_BODY = "{}";
 
@@ -56,6 +58,18 @@ public class UpdateDeviceControllerTest {
                 .content(anUpdateDeviceJson(OPERATING_SYSTEM_VERSION)))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(aNonExistingDeviceResponseJson()));
+    }
+
+    @Test
+    public void returnsBadRequestWhenImeiIsInvalid() throws Exception {
+        doThrow(InvalidImei.class).when(updateDevice)
+                .execute(INVALID_IMEI, anUpdateRequestDevice(OPERATING_SYSTEM_VERSION));
+
+        mockMvc.perform(put("/devices/" + INVALID_IMEI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(anUpdateDeviceJson(OPERATING_SYSTEM_VERSION)))
+                .andExpect(status().isBadRequest() )
+                .andExpect(content().json(anInvalidImeiResponseJson()));
     }
 
     @Test
