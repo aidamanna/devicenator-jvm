@@ -1,12 +1,13 @@
-FROM maven:3.6.1-jdk-11-slim
+FROM maven:3.6.1-jdk-11-slim as maven
 
-WORKDIR /usr/src/devicenator
+COPY ./pom.xml ./pom.xml
+RUN mvn dependency:go-offline -B
 
-COPY pom.xml /usr/src/devicenator/
-RUN mvn dependency:go-offline
+COPY ./src ./src
+RUN mvn package
 
-COPY src/ /usr/src/devicenator/src/
+FROM openjdk:11-jdk-slim
 
-EXPOSE 8080
+COPY --from=maven ./target/devicenator-*.jar ./target/devicenator.jar
 
-ENTRYPOINT ["mvn", "spring-boot:run"]
+ENTRYPOINT ["java", "-jar", "./target/devicenator.jar"]
