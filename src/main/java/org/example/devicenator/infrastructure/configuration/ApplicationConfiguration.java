@@ -51,7 +51,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public UserJdbcRepository userJdbcRepository() {
-        return new UserJdbcRepository();
+    public UserJdbcRepository userJdbcRepository(JdbcTemplate jdbcTemplate) {
+        return new UserJdbcRepository(jdbcTemplate);
     }
 }
