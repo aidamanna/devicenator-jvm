@@ -29,3 +29,5 @@ services:
     build: .
     container_name: devicenator
     ports: ['8080:8080']
+    volumes:
+      - './var/logs:/var/logs'
