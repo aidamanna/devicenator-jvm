@@ -6,7 +6,9 @@ import org.example.devicenator.application.deletedevice.DeleteDevice;
 import org.example.devicenator.application.getdevice.GetDevice;
 import org.example.devicenator.application.updatedevice.UpdateDevice;
 import org.example.devicenator.domain.device.DeviceRepository;
+import org.example.devicenator.domain.user.UserRepository;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
+import org.example.devicenator.infrastructure.persistence.UserJdbcRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +46,12 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public CreateUser createUser() {
-        return new CreateUser();
+    public CreateUser createUser(UserRepository userRepository) {
+        return new CreateUser(userRepository);
+    }
+
+    @Bean
+    public UserJdbcRepository userJdbcRepository() {
+        return new UserJdbcRepository();
     }
 }

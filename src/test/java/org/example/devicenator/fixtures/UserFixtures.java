@@ -1,11 +1,17 @@
 package org.example.devicenator.fixtures;
 
 import org.example.devicenator.application.createuser.CreateRequestUser;
+import org.example.devicenator.domain.user.Email;
+import org.example.devicenator.domain.user.User;
 
 public class UserFixtures {
 
     private static final String NAME = "Jane";
     private static final String SURNAME = "Brown";
+
+    public static User aUser(String email) {
+        return new User(new Email(email), NAME, SURNAME);
+    }
 
     public static CreateRequestUser aCreateRequestUser(String email) {
         return new CreateRequestUser(email, NAME, SURNAME);
