@@ -8,18 +8,12 @@ metadata:
 spec:
   containers:
   - image: aidamanna/devicenator:latest
-    imagePullPolicy: IfNotPresent
+    imagePullPolicy: Always
     name: devicenator
     ports:
     - containerPort: 8080
       name: http
-    resources:
-      limits:
-        cpu: 50m
-        memory: 32Mi
-      requests:
-        cpu: 50m
-        memory: 32Mi
+    resources: {}
     livenessProbe:
       httpGet:
         path: /actuator/health
