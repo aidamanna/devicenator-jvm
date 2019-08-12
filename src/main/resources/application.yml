@@ -14,3 +14,13 @@ spring:
     password:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
     baseline-on-migrate: true
+
+management:
+  endpoint:
+    health:
+      show-details: always
+
+info:
+  app:
+    name: devicenator
+    description: "Book devices in your device-lab"

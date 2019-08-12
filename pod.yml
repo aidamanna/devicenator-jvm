@@ -12,7 +12,22 @@ spec:
     name: devicenator
     ports:
     - containerPort: 8080
-    resources: {}
+      name: http
+    resources:
+      limits:
+        cpu: 50m
+        memory: 32Mi
+      requests:
+        cpu: 50m
+        memory: 32Mi
+    livenessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+    readinessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
   dnsPolicy: ClusterFirst
   restartPolicy: Never
 status: {}
