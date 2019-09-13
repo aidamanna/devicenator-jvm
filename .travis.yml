@@ -2,12 +2,16 @@ language: java
 
 services:
   - docker
-  -
+
 addons:
   apt:
     packages:
       - docker-ce
-      -
+
+cache:
+  directories:
+    - $HOME/.m2
+
 install:
   - mvn dependency:go-offline -B
   - mvn package -DskipTests
