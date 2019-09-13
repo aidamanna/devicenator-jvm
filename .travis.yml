@@ -1,0 +1,26 @@
+language: java
+
+services:
+  - docker
+  -
+addons:
+  apt:
+    packages:
+      - docker-ce
+      -
+install:
+  - mvn dependency:go-offline -B
+  - mvn package -DskipTests
+
+script:
+  - export DOCKER_CLI_EXPERIMENTAL=enabled
+  - docker build -t aidamanna/devicenator:${TRAVIS_BUILD_NUMBER}-arm64v8 . -f Dockerfile-arm64v8
+  - docker build -t aidamanna/devicenator:${TRAVIS_BUILD_NUMBER}-amd64 . -f Dockerfile-amd64
+  - docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
+  - docker push aidamanna/devicenator:${TRAVIS_BUILD_NUMBER}-arm64v8
+  - docker push aidamanna/devicenator:${TRAVIS_BUILD_NUMBER}-amd64
+  - docker manifest create aidamanna/devicenator:${TRAVIS_BUILD_NUMBER} aidamanna/devicenator:${TRAVIS_BUILD_NUMBER}-amd64 aidamanna/devicenator:${TRAVIS_BUILD_NUMBER}-arm64v8
+  - docker manifest push aidamanna/devicenator:${TRAVIS_BUILD_NUMBER}
+  -
+notifications:
+  email: false
