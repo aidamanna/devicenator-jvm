@@ -1,4 +1,4 @@
-FROM amd64/openjdk:11-jdk-slim
+FROM openjdk:11-jdk-slim
 
 COPY ./target/devicenator-*.jar ./target/devicenator.jar
 
