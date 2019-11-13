@@ -7,11 +7,11 @@ metadata:
   name: devicenator
 spec:
   ports:
-    - port: 8080
-      protocol: TCP
-      targetPort: 8080
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
   selector:
     run: devicenator
-  type: LoadBalancer
+  type: NodePort
 status:
   loadBalancer: {}
