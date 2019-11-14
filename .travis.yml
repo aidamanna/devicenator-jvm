@@ -3,11 +3,6 @@ language: java
 services:
   - docker
 
-addons:
-  apt:
-    packages:
-      - docker-ce
-
 cache:
   directories:
     - $HOME/.m2
@@ -16,8 +11,6 @@ cache:
 env:
   global:
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
-    - DOCKER_USER=${DOCKER_USER}
-    - DOCKER_PASSWORD=${DOCKER_PASSWORD}
     - SHA=${TRAVIS_COMMIT}
 
 before_install:
@@ -34,14 +27,16 @@ before_install:
   - gcloud container clusters get-credentials devicenator-cluster-1
 
 script:
-  - mvn package
+  - mvn package -Dmaven.test.skip=true
 
 after_success:
   - docker build -t aidamanna/devicenator:$SHA .
-  - docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
-  - docker push aidamanna/devicenator:$SHA
-  - kubectl apply -f infrastructure/k8s
-  - kubectl set image deployments/devicenator devicenator=aidamanna/devicenator:$SHA
+  - echo $DOCKER_USER
+  - echo $DOCKER_PASSWORD
+  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USER" --password-stdin
+  - docker push aidamanna/devicenator:${SHA}
+  #- kubectl apply -f infrastructure/k8s
+  #- kubectl set image deployments/devicenator devicenator=aidamanna/devicenator:{$SHA}
 
 notifications:
   email: false
