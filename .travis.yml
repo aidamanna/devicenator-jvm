@@ -11,15 +11,37 @@ addons:
 cache:
   directories:
     - $HOME/.m2
+    - $HOME/google-cloud-sdk
+
+env:
+  global:
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    - DOCKER_USER=${DOCKER_USER}
+    - DOCKER_PASSWORD=${DOCKER_PASSWORD}
+    - SHA=${TRAVIS_COMMIT}
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_8bbc50c118e8_key -iv $encrypted_8bbc50c118e8_iv -in devicenator-d714440108ae.json.enc -out devicenator-d714440108ae.json -d
+  - if [ ! -d $HOME/google-cloud-sdk/bin ]; then
+      rm -rf $HOME/google-cloud-sdk;
+      curl https://sdk.cloud.google.com | bash > /dev/null;
+    fi
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl
+  - gcloud auth activate-service-account --key-file devicenator-d714440108ae.json
+  - gcloud config set project devicenator
+  - gcloud config set compute/zone us-central1-b
+  - gcloud container clusters get-credentials devicenator-cluster-1
 
 script:
   - mvn package
 
 after_success:
-  - export DOCKER_CLI_EXPERIMENTAL=enabled
-  - docker build -t aidamanna/devicenator:${TRAVIS_BUILD_NUMBER} .
+  - docker build -t aidamanna/devicenator:$SHA .
   - docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
-  - docker push aidamanna/devicenator:${TRAVIS_BUILD_NUMBER}
+  - docker push aidamanna/devicenator:$SHA
+  - kubectl apply -f infrastructure/k8s
+  - kubectl set image deployments/devicenator devicenator=aidamanna/devicenator:$SHA
 
 notifications:
   email: false
