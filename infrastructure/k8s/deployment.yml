@@ -18,7 +18,7 @@ spec:
         run: devicenator
     spec:
       containers:
-      - image: aidamanna/devicenator:24
+      - image: aidamanna/devicenator
         name: devicenator
         ports:
         - containerPort: 8080
