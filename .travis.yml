@@ -3,11 +3,6 @@ language: java
 services:
   - docker
 
-addons:
-  apt:
-    packages:
-      - docker-ce
-
 cache:
   directories:
     - $HOME/.m2
@@ -16,9 +11,8 @@ script:
   - mvn package
 
 after_success:
-  - export DOCKER_CLI_EXPERIMENTAL=enabled
   - docker build -t aidamanna/devicenator:${TRAVIS_BUILD_NUMBER} .
-  - docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
+  - docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
   - docker push aidamanna/devicenator:${TRAVIS_BUILD_NUMBER}
 
 notifications:
