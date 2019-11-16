@@ -37,7 +37,7 @@ before_deploy:
 deploy:
   skip_cleanup: true
   provider: script
-  script: kubectl apply -f infrastructure/k8s && kubectl set image deployments/devicenator devicenator=aidamanna/devicenator:${SHA}
+  script: bash ./deploy.sh
   on:
     branch: master
 
