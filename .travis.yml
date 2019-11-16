@@ -29,12 +29,17 @@ before_install:
 script:
   - mvn package
 
-after_success:
+before_deploy:
   - docker build -t aidamanna/devicenator:${SHA} .
   - docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
   - docker push aidamanna/devicenator:${SHA}
-  - kubectl apply -f infrastructure/k8s
-  - kubectl set image deployments/devicenator devicenator=aidamanna/devicenator:${SHA}
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: kubectl apply -f infrastructure/k8s && kubectl set image deployments/devicenator devicenator=aidamanna/devicenator:${SHA}
+  on:
+    branch: master
 
 notifications:
   email: false
