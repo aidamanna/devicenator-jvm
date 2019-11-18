@@ -1,4 +1,4 @@
-package org.example.devicenator.domain;
+package org.example.devicenator.domain.device;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;

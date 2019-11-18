@@ -6,6 +6,9 @@ import org.example.devicenator.domain.device.Device;
 import org.example.devicenator.domain.device.Imei;
 import org.example.devicenator.domain.device.InvalidImei;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DeviceFixtures {
 
     private static final String VENDOR = "iPhone";
@@ -25,6 +28,16 @@ public class DeviceFixtures {
                 operatingSystemVersion);
     }
 
+    public static List<Device> aDeviceList(String[] rawImeiList) throws InvalidImei {
+        List<Device> deviceList = new ArrayList<>();
+
+        for(String rawImei : rawImeiList) {
+            deviceList.add(aDevice(rawImei));
+        }
+
+        return deviceList;
+    }
+
     public static CreateRequestDevice aCreateRequestDevice(String rawImei) {
         return new CreateRequestDevice(rawImei,
                 VENDOR,
@@ -37,13 +50,23 @@ public class DeviceFixtures {
         return new UpdateRequestDevice(operatingSystemVersion);
     }
 
-    public static String aCreateDeviceJson(String rawImei) {
+    public static String aDeviceJson(String rawImei) {
         return String.format("{\"imei\":\"%s\"," +
                         "\"vendor\":\"%s\"," +
                         "\"model\":\"%s\"," +
                         "\"operatingSystem\":\"%s\"," +
                         "\"operatingSystemVersion\":\"%s\"}",
                 rawImei, VENDOR, MODEL, OPERATING_SYSTEM, OPERATING_SYSTEM_VERSION);
+    }
+
+    public static String aDeviceListJson(String[] rawImeiList) {
+        List<String> deviceListJson = new ArrayList<>();
+
+        for(String rawImei : rawImeiList) {
+            deviceListJson.add(aDeviceJson(rawImei));
+        }
+
+        return deviceListJson.toString();
     }
 
     public static String anUpdateDeviceJson(String operatingSystemVersion) {

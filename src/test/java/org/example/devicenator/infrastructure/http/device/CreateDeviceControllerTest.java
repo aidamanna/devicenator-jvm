@@ -43,7 +43,7 @@ public class CreateDeviceControllerTest {
     public void createsADevice() throws Exception {
         mockMvc.perform(post("/devices")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(aCreateDeviceJson(RAW_IMEI)))
+                .content(aDeviceJson(RAW_IMEI)))
                 .andExpect(status().isCreated());
 
         verify(createDevice).execute(aCreateRequestDevice(RAW_IMEI));
@@ -55,7 +55,7 @@ public class CreateDeviceControllerTest {
 
         mockMvc.perform(post("/devices")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(aCreateDeviceJson(EXISTING_RAW_IMEI)))
+                .content(aDeviceJson(EXISTING_RAW_IMEI)))
                 .andExpect(status().isConflict())
                 .andExpect(content().json(aExistingDeviceResponseJson()));
     }
@@ -67,7 +67,7 @@ public class CreateDeviceControllerTest {
 
         mockMvc.perform(post("/devices")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(aCreateDeviceJson(INVALID_RAW_IMEI)))
+            .content(aDeviceJson(INVALID_RAW_IMEI)))
             .andExpect(status().isBadRequest())
             .andExpect(content().json(anInvalidImeiResponseJson()));
     }

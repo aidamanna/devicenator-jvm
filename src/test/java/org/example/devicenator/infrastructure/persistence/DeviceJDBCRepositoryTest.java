@@ -10,6 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.example.devicenator.fixtures.DeviceFixtures.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -20,6 +23,8 @@ public class DeviceJDBCRepositoryTest {
     private static final String UNKNOWN_RAW_IMEI = "990000862471853";
     private static final String OPERATING_SYSTEM_VERSION_10 = "10";
     private static final String OPERATING_SYSTEM_VERSION_11 = "11";
+    private static final String[] RAW_IMEI_LIST = {"990000862471853", "990000862471861"};
+
 
     private DeviceRepository deviceRepository;
     private Flyway flyway;
@@ -70,16 +75,33 @@ public class DeviceJDBCRepositoryTest {
     @Test
     public void retrievesADevice() throws DeviceException {
         Device device = aDevice(RAW_IMEI);
-
         deviceRepository.save(device);
 
         Device savedDevice = deviceRepository.getBy(Imei.create(RAW_IMEI));
+
         assertThat(savedDevice, is(device));
     }
 
     @Test(expected = DeviceNotFound.class)
     public void throwsExceptionWhenRetrievingANonExistingDevice() throws DeviceException {
         deviceRepository.getBy(Imei.create(UNKNOWN_RAW_IMEI));
+    }
+
+    @Test
+    public void retrievesAllDevices() throws InvalidImei, DeviceAlreadyExists {
+        List<Device> expectedDeviceList = aDeviceList(RAW_IMEI_LIST);
+        saveDevices(expectedDeviceList);
+
+        List<Device> deviceList = deviceRepository.getList();
+
+        assertThat(deviceList, is(expectedDeviceList));
+    }
+
+    @Test
+    public void retrievesEmptyArrayWhenNoDevices() {
+        List<Device> deviceList = deviceRepository.getList();
+
+        assertThat(deviceList, is(new ArrayList()));
     }
 
     @Test
@@ -120,5 +142,11 @@ public class DeviceJDBCRepositoryTest {
                 Integer.class);
 
         assertThat(deviceCount, is(0));
+    }
+
+    private void saveDevices(List<Device> expectedDeviceList) throws DeviceAlreadyExists {
+        for(int i = 0; i < expectedDeviceList.size(); i++) {
+            deviceRepository.save(expectedDeviceList.get(i));
+        }
     }
 }

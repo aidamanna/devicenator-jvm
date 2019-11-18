@@ -41,7 +41,7 @@ public class GetDeviceControllerTest {
 
         mockMvc.perform(get("/devices/" + RAW_IMEI))
                                 .andExpect(status().isOk())
-                                .andExpect(content().string(aCreateDeviceJson(RAW_IMEI)));
+                                .andExpect(content().json(aDeviceJson(RAW_IMEI)));
 
     }
 

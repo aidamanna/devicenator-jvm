@@ -4,6 +4,7 @@ import org.example.devicenator.application.createdevice.CreateDevice;
 import org.example.devicenator.application.createuser.CreateUser;
 import org.example.devicenator.application.deletedevice.DeleteDevice;
 import org.example.devicenator.application.getdevice.GetDevice;
+import org.example.devicenator.application.listdevices.ListDevices;
 import org.example.devicenator.application.updatedevice.UpdateDevice;
 import org.example.devicenator.domain.device.DeviceRepository;
 import org.example.devicenator.domain.user.UserRepository;
@@ -28,6 +29,11 @@ public class ApplicationConfiguration {
     @Bean
     public GetDevice getDevice(DeviceRepository deviceRepository) {
         return new GetDevice(deviceRepository);
+    }
+
+    @Bean
+    public ListDevices listDevices(DeviceRepository deviceRepository) {
+        return new ListDevices(deviceRepository);
     }
 
     @Bean

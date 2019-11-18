@@ -13,11 +13,11 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class DeviceJDBCRepository implements DeviceRepository {
 
     private JdbcTemplate jdbcTemplate;
-    private String getDeviceByIdQuery;
 
     public DeviceJDBCRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -29,12 +29,12 @@ public class DeviceJDBCRepository implements DeviceRepository {
 
         try {
             jdbcTemplate.update(
-                saveDeviceQuery,
-                device.getImei(),
-                device.getVendor(),
-                device.getModel(),
-                device.getOperatingSystem(),
-                device.getOperatingSystemVersion());
+                    saveDeviceQuery,
+                    device.getImei(),
+                    device.getVendor(),
+                    device.getModel(),
+                    device.getOperatingSystem(),
+                    device.getOperatingSystemVersion());
         } catch (DuplicateKeyException e) {
             throw new DeviceAlreadyExists();
         }
@@ -42,16 +42,25 @@ public class DeviceJDBCRepository implements DeviceRepository {
 
     @Override
     public Device getBy(Imei imei) throws DeviceNotFound {
-        getDeviceByIdQuery = "SELECT * FROM devices WHERE imei = ?";
+        String getDeviceByIdQuery = "SELECT * FROM devices WHERE imei = ?";
 
         try {
             return jdbcTemplate.queryForObject(
-                getDeviceByIdQuery,
-                new Object[]{imei.getImei()},
-                new DeviceRowMapper());
+                    getDeviceByIdQuery,
+                    new Object[]{imei.getImei()},
+                    new DeviceRowMapper());
         } catch (EmptyResultDataAccessException e) {
             throw new DeviceNotFound();
         }
+    }
+
+    @Override
+    public List<Device> getList() {
+        String listDevicesQuery = "SELECT * FROM devices";
+
+        return jdbcTemplate.query(
+                listDevicesQuery,
+                new DeviceRowMapper());
     }
 
     @Override
@@ -79,18 +88,17 @@ public class DeviceJDBCRepository implements DeviceRepository {
                 imei.getImei());
     }
 
-
     public class DeviceRowMapper implements RowMapper<Device> {
 
         @Override
         public Device mapRow(ResultSet rs, int rowNum) throws SQLException {
             try {
                 return new Device(
-                    Imei.create(rs.getString("imei")),
-                    rs.getString("vendor"),
-                    rs.getString("model"),
-                    rs.getString("operatingSystem"),
-                    rs.getString("operatingSystemVersion"));
+                        Imei.create(rs.getString("imei")),
+                        rs.getString("vendor"),
+                        rs.getString("model"),
+                        rs.getString("operatingSystem"),
+                        rs.getString("operatingSystemVersion"));
             } catch (InvalidImei e) {
                 throw new SQLException();
             }

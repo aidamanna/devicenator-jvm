@@ -1,6 +1,7 @@
-package org.example.devicenator.domain.user;
+package org.example.devicenator.infrastructure.persistence;
 
-import org.example.devicenator.infrastructure.persistence.UserJdbcRepository;
+import org.example.devicenator.domain.user.User;
+import org.example.devicenator.domain.user.UserAlreadyExists;
 import org.flywaydb.core.Flyway;
 import org.junit.After;
 import org.junit.Before;
