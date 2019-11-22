@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devicenator-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: devicenator
+  template:
+    metadata:
+      labels:
+        component: devicenator
+    spec:
+      containers:
+        - name: devicenator
+          image: aidamanna/devicenator
+          ports:
+            - containerPort: 8080
