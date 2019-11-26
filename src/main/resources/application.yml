@@ -4,15 +4,15 @@ spring:
       enabled: true
 
   datasource:
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driverClassName: org.postgresql.Driver
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://postgres-service:5432/devicenator
 
   flyway:
-    user: sa
-    password:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://postgres-service:5432/devicenator
     baseline-on-migrate: true
 
 management:
@@ -24,3 +24,19 @@ info:
   app:
     name: devicenator
     description: "Book devices in your device-lab"
+
+---
+spring:
+  profiles: dev
+
+  datasource:
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+
+  flyway:
+    user: sa
+    password:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    baseline-on-migrate: true
