@@ -18,7 +18,7 @@ spec:
             claimName: database-persistent-volume-claim
       containers:
         - name: postgres
-          image: postgres:12.1
+          image: postgres:9.5
           ports:
             - containerPort: 5432
           volumeMounts:
