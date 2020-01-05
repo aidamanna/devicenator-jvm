@@ -81,7 +81,7 @@ public class DeviceJDBCRepository implements DeviceRepository {
 
     @Override
     public void delete(Imei imei) {
-        String deleteDeviceQuery = "DELETE devices WHERE imei = ?";
+        String deleteDeviceQuery = "DELETE FROM devices WHERE imei = ?";
 
         jdbcTemplate.update(
                 deleteDeviceQuery,
