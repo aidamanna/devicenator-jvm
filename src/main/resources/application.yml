@@ -25,6 +25,15 @@ info:
     name: devicenator
     description: "Book devices in your device-lab"
 
+server:
+  ssl:
+    key-store: keystore.p12
+    key-store-password: password
+    key-store-type: pkcs12
+    key-alias: tomcat
+    key-password: password
+  port: 8443
+
 ---
 spring:
   profiles: dev
