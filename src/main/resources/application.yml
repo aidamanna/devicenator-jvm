@@ -2,6 +2,10 @@ spring:
   h2:
     console:
       enabled: true
+  security:
+    user:
+      name: aida
+      password: none
 
   datasource:
     driverClassName: org.postgresql.Driver
