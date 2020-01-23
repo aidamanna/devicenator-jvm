@@ -16,6 +16,7 @@ public class CreateUser {
     public void execute(CreateRequestUser createRequestUser) throws UserException {
         User user = new User(
                 Email.create(createRequestUser.getRawEmail()),
+                createRequestUser.getPassword(),
                 createRequestUser.getName(),
                 createRequestUser.getSurname());
 

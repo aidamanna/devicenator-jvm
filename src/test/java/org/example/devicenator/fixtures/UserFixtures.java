@@ -8,20 +8,22 @@ public class UserFixtures {
 
     private static final String NAME = "Jane";
     private static final String SURNAME = "Brown";
+    private static final String PASSWORD = "password";
 
     public static User aUser(String email) {
-        return new User(new Email(email), NAME, SURNAME);
+        return new User(new Email(email), PASSWORD, NAME, SURNAME);
     }
 
     public static CreateRequestUser aCreateRequestUser(String email) {
-        return new CreateRequestUser(email, NAME, SURNAME);
+        return new CreateRequestUser(email, PASSWORD, NAME, SURNAME);
     }
 
     public static String aCreateUserJson(String email) {
         return String.format("{\"email\":\"%s\"," +
+                        "\"password\":\"%s\"," +
                         "\"name\":\"%s\"," +
                         "\"surname\":\"%s\"}",
-                email, NAME, SURNAME);
+                email, PASSWORD, NAME, SURNAME);
     }
 
     public static String aExistingUserResponseJson() {

@@ -15,14 +15,15 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     public void save(User user) throws UserAlreadyExists {
-        String saveUserQuery = "INSERT INTO users VALUES (?, ?, ?)";
+        String saveUserQuery = "INSERT INTO users VALUES (?, ?, ?, ?)";
 
         try {
             jdbcTemplate.update(
                     saveUserQuery,
                     user.getEmail(),
                     user.getName(),
-                    user.getSurname());
+                    user.getSurname(),
+                    user.getPassword());
         } catch (DuplicateKeyException exception) {
             throw new UserAlreadyExists();
         }

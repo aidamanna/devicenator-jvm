@@ -18,6 +18,9 @@ public class CreateRequestUser {
     private String rawEmail;
 
     @NotBlank
+    private String password;
+
+    @NotBlank
     private String name;
 
     @NotBlank
