@@ -1,7 +1,7 @@
 package org.example.devicenator.infrastructure.http.user;
 
-import org.example.devicenator.application.createuser.CreateRequestUser;
-import org.example.devicenator.application.createuser.CreateUser;
+import org.example.devicenator.application.registeruser.RegisterRequestUser;
+import org.example.devicenator.application.registeruser.RegisterUser;
 import org.example.devicenator.domain.user.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-public class CreateUserController {
+public class RegistrationController {
 
-    private CreateUser createUser;
+    private RegisterUser registerUser;
 
     @Autowired
-    public CreateUserController(CreateUser createUser) {
-        this.createUser = createUser;
+    public RegistrationController(RegisterUser registerUser) {
+        this.registerUser = registerUser;
     }
 
-    @PostMapping("/users")
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void execute(@Valid @RequestBody CreateRequestUser user) throws UserException {
-        createUser.execute(user);
+    public void execute(@Valid @RequestBody RegisterRequestUser user) throws UserException {
+        registerUser.execute(user);
     }
 }

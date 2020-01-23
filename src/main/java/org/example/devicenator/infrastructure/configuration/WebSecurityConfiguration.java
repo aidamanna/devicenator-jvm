@@ -18,14 +18,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtUserDetails jwtUserDetails;
     private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public WebSecurityConfig(
+    public WebSecurityConfiguration(
         JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
         JwtUserDetails jwtUserDetails, JwtRequestFilter jwtRequestFilter) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-            .authorizeRequests().antMatchers("/authenticate").permitAll()
+            .authorizeRequests().antMatchers("/authenticate", "/register").permitAll()
             .anyRequest().authenticated().and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -1,6 +1,6 @@
 package org.example.devicenator.infrastructure.http.user;
 
-import org.example.devicenator.application.createuser.CreateUser;
+import org.example.devicenator.application.registeruser.RegisterUser;
 import org.example.devicenator.domain.user.InvalidEmail;
 import org.example.devicenator.domain.user.UserAlreadyExists;
 import org.example.devicenator.infrastructure.http.GlobalExceptionHandler;
@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CreateUserControllerTest {
+public class RegistrationControllerTest {
 
     private static final String RAW_EMAIL = "jane@example.com";
     private static final String EXISTING_RAW_EMAIL = "jane@example.com";
@@ -24,57 +24,57 @@ public class CreateUserControllerTest {
     private static final String EMPTY_REQUEST_BODY = "{}";
 
     private MockMvc mockMvc;
-    private CreateUser createUser;
+    private RegisterUser registerUser;
 
     @Before
     public void setUp() {
-        createUser = mock(CreateUser.class);
-        CreateUserController createUserController = new CreateUserController(createUser);
+        registerUser = mock(RegisterUser.class);
+        RegistrationController registrationController = new RegistrationController(registerUser);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(createUserController)
+        mockMvc = MockMvcBuilders.standaloneSetup(registrationController)
                 .setControllerAdvice(GlobalExceptionHandler.class)
                 .build();
     }
 
     @Test
     public void createsAUser() throws Exception {
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(aCreateUserJson(RAW_EMAIL)))
+                .content(aRegisterUserJson(RAW_EMAIL)))
                 .andExpect(status().isCreated());
 
-        verify(createUser).execute(aCreateRequestUser(RAW_EMAIL));
+        verify(registerUser).execute(aRegisterRequestUser(RAW_EMAIL));
     }
 
     @Test
     public void returnsConflictWhenTheUserAlreadyExists() throws Exception {
-        doThrow(new UserAlreadyExists()).when(createUser).execute(aCreateRequestUser(EXISTING_RAW_EMAIL));
+        doThrow(new UserAlreadyExists()).when(registerUser).execute(aRegisterRequestUser(EXISTING_RAW_EMAIL));
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(aCreateUserJson(EXISTING_RAW_EMAIL)))
+                .content(aRegisterUserJson(EXISTING_RAW_EMAIL)))
                 .andExpect(status().isConflict())
                 .andExpect(content().json(aExistingUserResponseJson()));
     }
 
     @Test
     public void returnsBadRequestWhenEmailIsInvalid() throws Exception {
-        doThrow(new InvalidEmail()).when(createUser).execute(aCreateRequestUser(INVALID_RAW_EMAIL));
+        doThrow(new InvalidEmail()).when(registerUser).execute(aRegisterRequestUser(INVALID_RAW_EMAIL));
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(aCreateUserJson(INVALID_RAW_EMAIL)))
+                .content(aRegisterUserJson(INVALID_RAW_EMAIL)))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(anInvalidEmailResponseJson()));
     }
 
     @Test
     public void returnsBadRequestWhenNotSpecifyingUserValues() throws Exception {
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(EMPTY_REQUEST_BODY))
                 .andExpect(status().isBadRequest());
 
-        verify(createUser, never()).execute(any());
+        verify(registerUser, never()).execute(any());
     }
 }

@@ -1,6 +1,6 @@
 package org.example.devicenator.fixtures;
 
-import org.example.devicenator.application.createuser.CreateRequestUser;
+import org.example.devicenator.application.registeruser.RegisterRequestUser;
 import org.example.devicenator.domain.user.Email;
 import org.example.devicenator.domain.user.User;
 
@@ -9,16 +9,17 @@ public class UserFixtures {
     private static final String NAME = "Jane";
     private static final String SURNAME = "Brown";
     private static final String PASSWORD = "password";
+    private static final String ENCODED_PASSWORD = "encodedPassword";
 
     public static User aUser(String email) {
-        return new User(new Email(email), PASSWORD, NAME, SURNAME);
+        return new User(new Email(email), ENCODED_PASSWORD, NAME, SURNAME);
     }
 
-    public static CreateRequestUser aCreateRequestUser(String email) {
-        return new CreateRequestUser(email, PASSWORD, NAME, SURNAME);
+    public static RegisterRequestUser aRegisterRequestUser(String email) {
+        return new RegisterRequestUser(email, PASSWORD, NAME, SURNAME);
     }
 
-    public static String aCreateUserJson(String email) {
+    public static String aRegisterUserJson(String email) {
         return String.format("{\"email\":\"%s\"," +
                         "\"password\":\"%s\"," +
                         "\"name\":\"%s\"," +

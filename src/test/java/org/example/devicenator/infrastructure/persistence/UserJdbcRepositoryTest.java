@@ -1,7 +1,6 @@
 package org.example.devicenator.infrastructure.persistence;
 
-import org.example.devicenator.domain.user.User;
-import org.example.devicenator.domain.user.UserAlreadyExists;
+import org.example.devicenator.domain.user.*;
 import org.flywaydb.core.Flyway;
 import org.junit.After;
 import org.junit.Before;
@@ -18,6 +17,7 @@ import static org.junit.Assert.*;
 public class UserJdbcRepositoryTest {
 
     private static final String RAW_EMAIL = "jane@example.com";
+    private static final String UNKNOWN_RAW_EMAIL = "john@example.com";
     private UserJdbcRepository userRepository;
     private Flyway flyway;
     private JdbcTemplate jdbcTemplate;
@@ -62,5 +62,20 @@ public class UserJdbcRepositoryTest {
         userRepository.save(user);
 
         userRepository.save(user);
+    }
+
+    @Test
+    public void retrievesAUser() throws UserException {
+        User user = aUser(RAW_EMAIL);
+        userRepository.save(user);
+
+        User savedUser = userRepository.getBy(Email.create(RAW_EMAIL));
+
+        assertThat(savedUser, is(user));
+    }
+
+    @Test(expected = UserNotFound.class)
+    public void throwsExceptionWhenRetrievingANonExistingUser() throws UserException {
+        userRepository.getBy(Email.create(UNKNOWN_RAW_EMAIL));
     }
 }

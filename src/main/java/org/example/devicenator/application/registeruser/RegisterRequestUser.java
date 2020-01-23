@@ -1,4 +1,4 @@
-package org.example.devicenator.application.createuser;
+package org.example.devicenator.application.registeruser;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class CreateRequestUser {
+public class RegisterRequestUser {
 
     @JsonProperty("email")
     @NotBlank

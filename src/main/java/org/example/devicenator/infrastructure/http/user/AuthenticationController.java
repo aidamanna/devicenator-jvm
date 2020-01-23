@@ -1,8 +1,8 @@
 package org.example.devicenator.infrastructure.http.user;
 
+import org.example.devicenator.application.authenticateuser.AuthenticationRequest;
+import org.example.devicenator.application.authenticateuser.AuthenticationResponse;
 import org.example.devicenator.application.authenticateuser.JwtUserDetails;
-import org.example.devicenator.application.authenticateuser.JwtTokenRequest;
-import org.example.devicenator.application.authenticateuser.JwtTokenResponse;
 import org.example.devicenator.infrastructure.configuration.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class JwtAuthenticationController {
+public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtToken jwtToken;
     private final JwtUserDetails userDetailsService;
 
     @Autowired
-    public JwtAuthenticationController(
+    public AuthenticationController(
         AuthenticationManager authenticationManager, JwtToken jwtToken,
         JwtUserDetails userDetailsService) {
         this.authenticationManager = authenticationManager;
@@ -33,12 +33,12 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         String token = jwtToken.generate(userDetails);
-        return ResponseEntity.ok(new JwtTokenResponse(token));
+        return ResponseEntity.ok(new AuthenticationResponse(token));
     }
     private void authenticate(String username, String password) throws Exception {
         try {

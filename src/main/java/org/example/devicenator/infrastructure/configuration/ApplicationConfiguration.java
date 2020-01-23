@@ -2,7 +2,7 @@ package org.example.devicenator.infrastructure.configuration;
 
 import org.example.devicenator.application.authenticateuser.JwtUserDetails;
 import org.example.devicenator.application.createdevice.CreateDevice;
-import org.example.devicenator.application.createuser.CreateUser;
+import org.example.devicenator.application.registeruser.RegisterUser;
 import org.example.devicenator.application.deletedevice.DeleteDevice;
 import org.example.devicenator.application.getdevice.GetDevice;
 import org.example.devicenator.application.listdevices.ListDevices;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -53,8 +54,8 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public CreateUser createUser(UserRepository userRepository) {
-        return new CreateUser(userRepository);
+    public RegisterUser createUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        return new RegisterUser(userRepository, passwordEncoder);
     }
 
     @Bean
@@ -63,7 +64,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public JwtUserDetails userDetailsService() {
-        return new JwtUserDetails();
+    public JwtUserDetails userDetailsService(UserRepository userRepository) {
+        return new JwtUserDetails(userRepository);
     }
 }
