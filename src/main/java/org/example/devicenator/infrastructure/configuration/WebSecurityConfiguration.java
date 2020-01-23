@@ -1,6 +1,6 @@
 package org.example.devicenator.infrastructure.configuration;
 
-import org.example.devicenator.application.authenticateuser.JwtUserDetails;
+import org.example.devicenator.application.authenticateuser.GetUserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,21 +21,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtUserDetails jwtUserDetails;
+    private final GetUserToken getUserToken;
     private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
     public WebSecurityConfiguration(
-        JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-        JwtUserDetails jwtUserDetails, JwtRequestFilter jwtRequestFilter) {
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+            GetUserToken getUserToken, JwtRequestFilter jwtRequestFilter) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtUserDetails = jwtUserDetails;
+        this.getUserToken = getUserToken;
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetails).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(getUserToken).passwordEncoder(passwordEncoder());
     }
 
     @Bean
