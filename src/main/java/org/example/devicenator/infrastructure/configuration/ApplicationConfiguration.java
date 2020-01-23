@@ -1,6 +1,6 @@
 package org.example.devicenator.infrastructure.configuration;
 
-import org.example.devicenator.application.JwtUserDetailsService;
+import org.example.devicenator.application.authenticateuser.JwtUserDetails;
 import org.example.devicenator.application.createdevice.CreateDevice;
 import org.example.devicenator.application.createuser.CreateUser;
 import org.example.devicenator.application.deletedevice.DeleteDevice;
@@ -63,7 +63,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public JwtUserDetailsService userDetailsService() {
-        return new JwtUserDetailsService();
+    public JwtUserDetails userDetailsService() {
+        return new JwtUserDetails();
     }
 }

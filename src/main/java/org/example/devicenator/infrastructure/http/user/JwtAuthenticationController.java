@@ -1,9 +1,9 @@
 package org.example.devicenator.infrastructure.http.user;
 
-import org.example.devicenator.application.JwtUserDetailsService;
-import org.example.devicenator.domain.user.JwtRequest;
-import org.example.devicenator.domain.user.JwtResponse;
-import org.example.devicenator.infrastructure.configuration.JwtTokenUtil;
+import org.example.devicenator.application.authenticateuser.JwtUserDetails;
+import org.example.devicenator.application.authenticateuser.JwtTokenRequest;
+import org.example.devicenator.application.authenticateuser.JwtTokenResponse;
+import org.example.devicenator.infrastructure.configuration.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,22 +19,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class JwtAuthenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final JwtToken jwtToken;
+    private final JwtUserDetails userDetailsService;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private JwtUserDetailsService userDetailsService;
+    public JwtAuthenticationController(
+        AuthenticationManager authenticationManager, JwtToken jwtToken,
+        JwtUserDetails userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtToken = jwtToken;
+        this.userDetailsService = userDetailsService;
+    }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+        String token = jwtToken.generate(userDetails);
+        return ResponseEntity.ok(new JwtTokenResponse(token));
     }
     private void authenticate(String username, String password) throws Exception {
         try {
