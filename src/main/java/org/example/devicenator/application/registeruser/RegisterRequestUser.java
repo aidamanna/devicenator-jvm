@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class RegisterRequestUser {
 
-    @JsonProperty("email")
+    @JsonProperty("username")
     @NotBlank
     private String rawEmail;
 

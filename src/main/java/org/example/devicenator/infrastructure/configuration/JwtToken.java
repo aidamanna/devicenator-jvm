@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.example.devicenator.domain.user.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -40,12 +42,12 @@ public class JwtToken implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generate(UserDetails userDetails) {
+    public String generate(User user) {
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder()
             .setClaims(claims)
-            .setSubject(userDetails.getUsername())
+            .setSubject(user.getEmail())
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
             .signWith(SignatureAlgorithm.HS512, SECRET)

@@ -20,7 +20,7 @@ public class UserFixtures {
     }
 
     public static String aRegisterUserJson(String email) {
-        return String.format("{\"email\":\"%s\"," +
+        return String.format("{\"username\":\"%s\"," +
                         "\"password\":\"%s\"," +
                         "\"name\":\"%s\"," +
                         "\"surname\":\"%s\"}",
