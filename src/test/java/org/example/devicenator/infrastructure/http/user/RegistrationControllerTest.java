@@ -37,7 +37,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void createsAUser() throws Exception {
+    public void registersAUser() throws Exception {
         mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(aRegisterUserJson(RAW_EMAIL)))
@@ -47,7 +47,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void returnsConflictWhenTheUserAlreadyExists() throws Exception {
+    public void returnsConflictWhenTheUserIsRegistered() throws Exception {
         doThrow(new UserAlreadyExists()).when(registerUser).execute(aRegisterRequestUser(EXISTING_RAW_EMAIL));
 
         mockMvc.perform(post("/register")

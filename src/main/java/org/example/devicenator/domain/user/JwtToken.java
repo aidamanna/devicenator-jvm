@@ -1,19 +1,15 @@
-package org.example.devicenator.infrastructure.configuration;
+package org.example.devicenator.domain.user;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import org.example.devicenator.domain.user.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
 
-@Component
 public class JwtToken implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;

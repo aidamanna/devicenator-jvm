@@ -27,12 +27,26 @@ public class UserFixtures {
                 email, PASSWORD, NAME, SURNAME);
     }
 
+    public static String aAuthenticationRequestJson(String email) {
+        return String.format("{\"username\":\"%s\"," +
+                "\"password\":\"%s\"}",
+            email, PASSWORD);
+    }
+
+    public static String aAuthenticationResponseJson(String token) {
+        return String.format("{\"token\":\"%s\"}", token);
+    }
+
     public static String aExistingUserResponseJson() {
-        return aResponseJson("EXISTING_USER", "The user is registered");
+        return aResponseJson("REGISTERED_USER", "The user is registered");
     }
 
     public static String anInvalidEmailResponseJson() {
         return aResponseJson("INVALID_EMAIL", "The user email is invalid");
+    }
+
+    public static String aNonRegisteredUserResponseJson() {
+        return aResponseJson("NOT_REGISTERED_USER", "The user is not registered");
     }
 
     private static String aResponseJson(String error, String reason) {

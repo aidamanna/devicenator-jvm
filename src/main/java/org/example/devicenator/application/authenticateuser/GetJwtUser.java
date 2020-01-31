@@ -1,7 +1,7 @@
 package org.example.devicenator.application.authenticateuser;
 
 import org.example.devicenator.domain.user.*;
-import org.example.devicenator.infrastructure.configuration.JwtToken;
+import org.example.devicenator.domain.user.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -8,6 +8,7 @@ import org.example.devicenator.application.getdevice.GetDevice;
 import org.example.devicenator.application.listdevices.ListDevices;
 import org.example.devicenator.application.updatedevice.UpdateDevice;
 import org.example.devicenator.domain.device.DeviceRepository;
+import org.example.devicenator.domain.user.JwtToken;
 import org.example.devicenator.domain.user.UserRepository;
 import org.example.devicenator.infrastructure.persistence.DeviceJDBCRepository;
 import org.example.devicenator.infrastructure.persistence.UserJdbcRepository;
@@ -61,6 +62,11 @@ public class ApplicationConfiguration {
     @Bean
     public UserJdbcRepository userJdbcRepository(JdbcTemplate jdbcTemplate) {
         return new UserJdbcRepository(jdbcTemplate);
+    }
+
+    @Bean
+    public JwtToken jwtToken() {
+        return new JwtToken();
     }
 
     @Bean

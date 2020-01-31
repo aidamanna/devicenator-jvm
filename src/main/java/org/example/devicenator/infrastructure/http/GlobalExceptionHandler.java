@@ -5,6 +5,7 @@ import org.example.devicenator.domain.device.DeviceNotFound;
 import org.example.devicenator.domain.device.InvalidImei;
 import org.example.devicenator.domain.user.InvalidEmail;
 import org.example.devicenator.domain.user.UserAlreadyExists;
+import org.example.devicenator.domain.user.UserNotFound;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -56,9 +57,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         String responseBody =
-                String.format("{\"error\": \"EXISTING_USER\", \"reason\": \"%s\"}", exception.getMessage());
+                String.format("{\"error\": \"REGISTERED_USER\", \"reason\": \"%s\"}", exception.getMessage());
 
         return handleExceptionInternal(exception, responseBody, headers, HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler({UserNotFound.class})
+    protected ResponseEntity<Object> handleUserNotFound(Exception exception, WebRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String responseBody =
+            String.format("{\"error\": \"NOT_REGISTERED_USER\", \"reason\": \"%s\"}", exception.getMessage());
+
+        return handleExceptionInternal(exception, responseBody, headers, HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler({InvalidEmail.class})
