@@ -6,25 +6,10 @@ services:
 cache:
   directories:
     - $HOME/.m2
-    - $HOME/google-cloud-sdk
 
 env:
   global:
-    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
     - SHA=${TRAVIS_COMMIT}
-
-before_install:
-  - openssl aes-256-cbc -K $encrypted_8bbc50c118e8_key -iv $encrypted_8bbc50c118e8_iv -in devicenator-d714440108ae.json.enc -out devicenator-d714440108ae.json -d
-  - if [ ! -d $HOME/google-cloud-sdk/bin ]; then
-    rm -rf $HOME/google-cloud-sdk;
-    curl https://sdk.cloud.google.com | bash > /dev/null;
-    fi
-  - source $HOME/google-cloud-sdk/path.bash.inc
-  - gcloud components update kubectl
-  - gcloud auth activate-service-account --key-file devicenator-d714440108ae.json
-  - gcloud config set project devicenator
-  - gcloud config set compute/zone us-central1-b
-  - gcloud container clusters get-credentials devicenator-cluster-1
 
 script:
   - mvn package
@@ -33,13 +18,6 @@ before_deploy:
   - docker build -t aidamanna/devicenator:${SHA} .
   - echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USER} --password-stdin
   - docker push aidamanna/devicenator:${SHA}
-
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: bash ./deploy.sh
-  on:
-    branch: master
 
 notifications:
   email: false
