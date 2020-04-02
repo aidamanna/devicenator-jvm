@@ -14,7 +14,7 @@ env:
 script:
   - mvn package
 
-before_deploy:
+after_success:
   - docker build -t aidamanna/devicenator:${SHA} .
   - echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USER} --password-stdin
   - docker push aidamanna/devicenator:${SHA}
