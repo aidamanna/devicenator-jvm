@@ -11,3 +11,6 @@
 .sts4-cache
 
 /var/*
+
+**/.terraform
+**/terraform.*
