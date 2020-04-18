@@ -1,5 +1,5 @@
-resource "aws_ecr_repository" "devicenator-api-repository" {
-  name = "devicenator-api-repository"
+resource "aws_ecr_repository" "devicenator-api" {
+  name = "devicenator-api"
 }
 
 resource "aws_iam_user" "travis-devicenator-api" {
