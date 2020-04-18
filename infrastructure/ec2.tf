@@ -9,7 +9,7 @@ resource "aws_security_group" "devicenator-api-security-group" {
     to_port = 22
     protocol = "tcp"
     cidr_blocks = [
-      "192.168.1.37/32"]
+      "88.15.110.157/32"]
   }
 
   egress {
