@@ -6,9 +6,9 @@ resource "aws_iam_user" "travis-devicenator-api" {
   name = "travis-devicenator-api"
 }
 
-//resource "aws_iam_access_key" "travis-devicenator-api" {
-//  user = aws_iam_user.travis-devicenator-api.name
-//}
+resource "aws_iam_access_key" "travis-devicenator-api" {
+  user = aws_iam_user.travis-devicenator-api.name
+}
 
 resource "aws_iam_role" "ecr-role" {
   name = "ecr-role"
