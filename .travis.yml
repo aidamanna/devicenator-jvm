@@ -16,10 +16,8 @@ install:
   - export PATH=$PATH:$HOME/.local/bin
 
 script:
-  - mvn package
-
-after_success:
-  - ./infrastructure/build-docker-image.sh
+  - mvn package || travis_terminate 1
+  - ./infrastructure/build-docker-image.sh || travis_terminate 1
 
 notifications:
   email: false

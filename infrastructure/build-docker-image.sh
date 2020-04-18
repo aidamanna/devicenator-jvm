@@ -9,7 +9,7 @@ ROLE_ARN="arn:aws:iam::832237568284:role/ecr-role"
 ASSUMED_ROLE=$(
     aws sts assume-role \
         --role-arn ${ROLE_ARN} \
-        --role-session-name devicenator-api-build-docker-image
+        --role-session-name travis-devicenator-api
 )
 
 export AWS_SESSION_TOKEN=$(echo ${ASSUMED_ROLE} | jq -r '.Credentials.SessionToken')
