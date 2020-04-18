@@ -15,9 +15,11 @@ script:
   - mvn package
 
 after_success:
-  - docker build -t aidamanna/devicenator:${SHA} .
-  - echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USER} --password-stdin
-  - docker push aidamanna/devicenator:${SHA}
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+  - eval $(aws ecr get-login-password)
+  - docker build -t 832237568284.dkr.ecr.eu-west-1.amazonaws.com/devicenator-api:${SHA} .
+  - docker push 832237568284.dkr.ecr.eu-west-1.amazonaws.com/devicenator-api:${SHA}
 
 notifications:
   email: false
