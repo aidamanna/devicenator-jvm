@@ -2,9 +2,9 @@
 
 set -euxo pipefail
 
-REPOSITORY="832237568284.dkr.ecr.eu-west-1.amazonaws.com"
+REPOSITORY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
 IMAGE_TAG="${REPOSITORY}/devicenator-api:devicenator-api-${SHA}"
-ROLE_ARN="arn:aws:iam::832237568284:role/ecr-role"
+ROLE_ARN="arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecr-role"
 
 ASSUMED_ROLE=$(
     aws sts assume-role \
