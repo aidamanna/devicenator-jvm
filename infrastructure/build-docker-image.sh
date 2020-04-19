@@ -2,8 +2,8 @@
 
 set -euxo pipefail
 
-REPOSITORY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-IMAGE_TAG="${REPOSITORY}/devicenator-api:devicenator-api-${SHA}"
+DOCKER_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+IMAGE_TAG="${DOCKER_REGISTRY}/devicenator-api:devicenator-api-${SHA}"
 ROLE_ARN="arn:aws:iam::${AWS_ACCOUNT_ID}:role/ci-role"
 
 ASSUMED_ROLE=$(
@@ -19,7 +19,7 @@ export AWS_SECRET_ACCESS_KEY=$(echo ${ASSUMED_ROLE} | jq -r '.Credentials.Secret
 aws ecr get-login-password \
 | docker login \
     --username AWS \
-    --password-stdin ${REPOSITORY}
+    --password-stdin ${DOCKER_REGISTRY}
 
 docker build -t ${IMAGE_TAG} .
 docker push ${IMAGE_TAG}
