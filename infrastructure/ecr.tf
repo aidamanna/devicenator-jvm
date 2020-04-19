@@ -1,9 +1,9 @@
 resource "aws_ecr_repository" "devicenator-api" {
-  name = "devicenator-api"
+  name = local.repository_name
 }
 
 resource "aws_iam_user" "travis-devicenator-api" {
-  name = "travis-devicenator-api"
+  name = local.travis_user
 }
 
 resource "aws_iam_access_key" "travis-devicenator-api" {
@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "assume-rol-policy-document" {
 
     principals {
       identifiers = [
-        "arn:aws:iam::${var.account_id}:user/travis-devicenator-api"]
+        "arn:aws:iam::${var.account_id}:user/${local.travis_user}"]
       type = "AWS"
     }
   }
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "ecr-policy-document" {
       "ecr:*"
     ]
     resources = [
-      "arn:aws:ecr:${var.region}:${var.account_id}:repository/devicenator-api"
+      "arn:aws:ecr:${local.region}:${var.account_id}:repository/${local.repository_name}"
     ]
   }
   statement {
