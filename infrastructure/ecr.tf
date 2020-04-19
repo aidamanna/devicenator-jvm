@@ -33,8 +33,8 @@ resource "aws_iam_access_key" "travis-devicenator-api" {
   user = aws_iam_user.travis-devicenator-api.name
 }
 
-resource "aws_iam_role" "ecr-role" {
-  name = "ecr-role"
+resource "aws_iam_role" "ci-role" {
+  name = "ci-role"
   assume_role_policy = data.aws_iam_policy_document.assume-rol-policy-document.json
 }
 
@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "assume-rol-policy-document" {
 }
 
 resource "aws_iam_role_policy_attachment" "ecr-policy-attachment" {
-  role       = aws_iam_role.ecr-role.name
+  role       = aws_iam_role.ci-role.name
   policy_arn = aws_iam_policy.ecr-policy.arn
 }
 

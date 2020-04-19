@@ -4,7 +4,7 @@ set -euxo pipefail
 
 REPOSITORY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
 IMAGE_TAG="${REPOSITORY}/devicenator-api:devicenator-api-${SHA}"
-ROLE_ARN="arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecr-role"
+ROLE_ARN="arn:aws:iam::${AWS_ACCOUNT_ID}:role/ci-role"
 
 ASSUMED_ROLE=$(
     aws sts assume-role \
