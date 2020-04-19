@@ -46,6 +46,15 @@ data "aws_iam_policy_document" "ecr-policy-document" {
       "ecr:*"
     ]
     resources = [
+      "arn:aws:ecr:${var.region}:${var.account_id}:repository/devicenator-api"
+    ]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecr:GetAuthorizationToken"
+    ]
+    resources = [
       "*"
     ]
   }
