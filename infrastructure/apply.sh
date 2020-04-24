@@ -9,3 +9,4 @@ terraform plan \
 terraform apply "devicenator-api.plan"
 
 rm ./devicenator-api.plan
+rm -rf ./.terraform
