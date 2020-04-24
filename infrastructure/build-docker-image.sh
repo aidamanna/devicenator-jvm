@@ -4,7 +4,7 @@ set -euxo pipefail
 
 DOCKER_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
 IMAGE_TAG="${DOCKER_REGISTRY}/devicenator-api:devicenator-api-${SHA}"
-ROLE_ARN="arn:aws:iam::${AWS_ACCOUNT_ID}:role/ci-role"
+ROLE_ARN="arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecr-role"
 
 ASSUMED_ROLE=$(
     aws sts assume-role \
