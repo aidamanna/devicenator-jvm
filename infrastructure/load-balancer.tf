@@ -2,7 +2,7 @@ resource "aws_alb" "devicenator-api-load-balancer" {
   name = "devicenator-api-load-balancer"
   internal = false
   subnets = [aws_subnet.devicenator-vpc-subnet-public-1.id, aws_subnet.devicenator-vpc-subnet-public-2.id]
-  security_groups = [aws_security_group.devicenator-api-security-group.id]
+  security_groups = [aws_security_group.devicenator-api-load-balancer-security-group.id]
 
   tags = {
     Name = "devicenator-api-load-balancer"
@@ -13,7 +13,7 @@ resource "aws_alb" "devicenator-api-load-balancer" {
 resource "aws_alb_listener" "alb-listener" {
   load_balancer_arn = aws_alb.devicenator-api-load-balancer.arn
   protocol = "HTTP"
-  port = 8080
+  port = 80
 
   default_action {
     target_group_arn = aws_alb_target_group.devicenator-api-target-group.arn
