@@ -7,12 +7,12 @@ spring:
     driverClassName: org.postgresql.Driver
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
-    url: jdbc:postgresql://postgres-service:5432/devicenator
+    url: jdbc:postgresql://devicenator-db.cleg7mfpavam.eu-west-1.rds.amazonaws.com:5432/devicenator
 
   flyway:
     user: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
-    url: jdbc:postgresql://postgres-service:5432/devicenator
+    url: jdbc:postgresql://devicenator-db.cleg7mfpavam.eu-west-1.rds.amazonaws.com:5432/devicenator
     baseline-on-migrate: true
 
 management:
