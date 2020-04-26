@@ -35,6 +35,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain chain) throws ServletException, IOException {
+        logger.info("The request uri is: " + request.getRequestURI());
         String username = null;
         String token = null;
         String requestTokenHeader = request.getHeader("Authorization");
