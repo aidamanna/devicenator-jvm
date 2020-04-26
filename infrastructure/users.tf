@@ -13,12 +13,9 @@ resource "aws_iam_role" "ecr-role" {
 
 data "aws_iam_policy_document" "assume-rol-policy-document" {
   statement {
-    actions = [
-      "sts:AssumeRole"]
-
+    actions = ["sts:AssumeRole"]
     principals {
-      identifiers = [
-        "arn:aws:iam::${var.account_id}:user/${local.travis_user}"]
+      identifiers = ["arn:aws:iam::${var.account_id}:user/${local.travis_user}"]
       type = "AWS"
     }
   }
@@ -38,20 +35,12 @@ resource "aws_iam_policy" "ecr-policy" {
 data "aws_iam_policy_document" "ecr-policy-document" {
   statement {
     effect = "Allow"
-    actions = [
-      "ecr:*"
-    ]
-    resources = [
-      "arn:aws:ecr:${local.region}:${var.account_id}:repository/${local.repository_name}"
-    ]
+    actions = ["ecr:*"]
+    resources = ["arn:aws:ecr:${local.region}:${var.account_id}:repository/${local.repository_name}"]
   }
   statement {
     effect = "Allow"
-    actions = [
-      "ecr:GetAuthorizationToken"
-    ]
-    resources = [
-      "*"
-    ]
+    actions = ["ecr:GetAuthorizationToken"]
+    resources = ["*"]
   }
 }

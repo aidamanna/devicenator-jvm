@@ -61,33 +61,3 @@ resource "aws_route_table_association" "route-table-subnet-2-association" {
   subnet_id = aws_subnet.devicenator-vpc-subnet-public-2.id
   route_table_id = aws_route_table.devicenator-vpc-route-table.id
 }
-
-resource "aws_security_group" "devicenator-api-security-group" {
-  name = "devicenator-api-security-group"
-  description = "Allow SSH inbound traffic and all outbound traffic"
-  vpc_id = aws_vpc.devicenator-vpc.id
-
-  ingress {
-    description = "HTTP"
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
-  }
-
-  egress {
-    description = "All outbound traffic"
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
-  }
-
-  tags = {
-    Name = "devicenator-api-security-group"
-  }
-}

@@ -1,5 +1,3 @@
-variable "region" {
-  default = "eu-west-1"
-}
-
 variable "account_id" {}
+variable "postgres_user" {}
+variable "postgres_password" {}
